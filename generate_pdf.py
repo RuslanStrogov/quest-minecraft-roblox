@@ -312,4 +312,4 @@ def write_pdf(output_path):
     pdf.output(output_path)
     print(f'PDF: {output_path} ({pdf.page_no()} стр)')
 
-write_pdf(r'C:\Users\Ruslan\quest-minecraft-rob\materials\instructions.pdf')
+write_pdf(r'C:\Users\Ruslan\quest-minecraft-rob\instructions.pdf')
