@@ -1,513 +1,498 @@
 #!/usr/bin/env python3
-"""Generate all printable materials for Minecraft+Roblox birthday quest."""
-import os, math
+"""Generate all 14 SVG files for the quest - SIMPLE & ROCK SOLID.
+Uses viewBox 0 0 800 1131 (A4 ratio) and standard px font sizes.
+"""
+import os
 
 BASE = r"C:\Users\Ruslan\quest-minecraft-rob\materials"
+os.makedirs(BASE, exist_ok=True)
 
-def svg_header(title):
+W, H = 800, 1131  # viewBox dimensions (A4 ratio)
+
+def svg(title):
     return f'''<?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" width="210mm" height="297mm" viewBox="0 0 210 297">
-<defs>
-<style>
-  @page {{ margin: 0; }}
-  svg {{ background: white; }}
-  text {{ font-family: 'Segoe UI', 'Arial', sans-serif; }}
-</style>
-</defs>
-<rect width="210" height="297" fill="white"/>
-<text x="15" y="10" font-size="6" font-weight="bold" fill="#999">{title}</text>
-<line x1="15" y1="11" x2="195" y2="11" stroke="#ccc" stroke-width="0.3"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}">
+<rect width="{W}" height="{H}" fill="#ffffff"/>
+<rect x="0" y="0" width="{W}" height="24" fill="#4a7b2a"/>
+<text x="20" y="17" font-size="16" fill="#ffffff" font-family="Arial,sans-serif">{title}</text>
 '''
 
-def svg_footer():
+def end():
     return '</svg>\n'
 
-def rounded_rect(x, y, w, h, r=2, fill="#f5e6c8", stroke="#8b6914", sw=0.5):
-    return f'<rect x="{x}" y="{y}" width="{w}" height="{h}" rx="{r}" fill="{fill}" stroke="{stroke}" stroke-width="{sw}"/>'
+def box(x, y, w, h, fill="#f0e8d8", stroke="#8b6914", sw=2, rx=6):
+    return f'<rect x="{x}" y="{y}" width="{w}" height="{h}" rx="{rx}" fill="{fill}" stroke="{stroke}" stroke-width="{sw}"/>'
 
-def minecraft_border(x, y, w, h, colors=("#3d6b1e", "#5a8c3a")):
-    parts = []
-    size = 2
-    cols = int(w / size)
-    rows = int(h / size)
-    for i in range(cols):
-        parts.append(f'<rect x="{x+i*size}" y="{y}" width="{size}" height="{size}" fill="{colors[i%2]}"/>')
-        parts.append(f'<rect x="{x+i*size}" y="{y+h-size}" width="{size}" height="{size}" fill="{colors[(i+1)%2]}"/>')
-    for i in range(rows):
-        parts.append(f'<rect x="{x}" y="{y+i*size}" width="{size}" height="{size}" fill="{colors[i%2]}"/>')
-        parts.append(f'<rect x="{x+w-size}" y="{y+i*size}" width="{size}" height="{size}" fill="{colors[(i+1)%2]}"/>')
-    return '\n'.join(parts)
+def cut(x, y, w, h):
+    return f'<rect x="{x}" y="{y}" width="{w}" height="{h}" fill="none" stroke="#888" stroke-width="1" stroke-dasharray="6,4"/>'
 
-FS = lambda pt: f'font-size="{pt}"'
+def txt(x, y, s, size=18, color="#333", align="start", bold="normal"):
+    return f'<text x="{x}" y="{y}" font-size="{size}" fill="{color}" font-family="Arial,sans-serif" text-anchor="{align}" font-weight="{bold}">{s}</text>'
 
-def note_card(x, y, w, h, num, title_text, body_lines):
-    parts = []
-    parts.append(f'<rect x="{x+1}" y="{y+1}" width="{w}" height="{h}" rx="2" fill="rgba(0,0,0,0.15)"/>')
-    parts.append(rounded_rect(x, y, w, h, 2, "#f5e6c8", "#8b6914"))
-    bcolors = ["#4a7b2a", "#5a3a1a", "#7b3a1a", "#3a5a7b", "#5a2a7b"]
-    parts.append(minecraft_border(x+2, y+2, w-4, h-4, (bcolors[num%5], bcolors[(num+1)%5])))
-    parts.append(f'<circle cx="{x+w-8}" cy="{y+8}" r="4" fill="#d4c49a" stroke="#8b6914" stroke-width="0.3"/>')
-    parts.append(f'<text x="{x+6}" y="{y+7}" {FS(8)} fill="#5a3a1a" font-weight="bold">Записка №{num}</text>')
-    parts.append(f'<text x="{x+6}" y="{y+12}" {FS(7)} fill="#3d2b0a" font-weight="bold">{title_text}</text>')
-    cy = y + 17
-    for line in body_lines:
-        while len(line) > 38:
-            parts.append(f'<text x="{x+6}" y="{cy}" {FS(5.5)} fill="#3d2b0a">{line[:38]}</text>')
-            line = "   " + line[38:]
-            cy += 3.8
-        parts.append(f'<text x="{x+6}" y="{cy}" {FS(5.5)} fill="#3d2b0a">{line}</text>')
-        cy += 3.8
-    parts.append(f'<rect x="{x-0.5}" y="{y-0.5}" width="{w+1}" height="{h+1}" stroke="#666" stroke-width="0.3" stroke-dasharray="3,2" fill="none"/>')
-    return '\n'.join(parts)
+def wb(x, y, w, h, colors=("#3d6b1e","#5a8c3a"), size=4):
+    """Pixel border"""
+    p = []
+    for i in range(int(w/size)):
+        p.append(f'<rect x="{x+i*size}" y="{y}" width="{size}" height="{size}" fill="{colors[i%2]}"/>')
+        p.append(f'<rect x="{x+i*size}" y="{y+h-size}" width="{size}" height="{size}" fill="{colors[(i+1)%2]}"/>')
+    for i in range(int(h/size)):
+        p.append(f'<rect x="{x}" y="{y+i*size}" width="{size}" height="{size}" fill="{colors[i%2]}"/>')
+        p.append(f'<rect x="{x+w-size}" y="{y+i*size}" width="{size}" height="{size}" fill="{colors[(i+1)%2]}"/>')
+    return '\n'.join(p)
 
 
-# === GENERATORS ===
-
-def generate_notes():
-    parts = [svg_header("Записки для квеста — распечатай и вырежи")]
+# ─── 1. NOTES ─────────────────────────────────────────────────
+def gen_notes():
+    s = [svg("Записки — распечатай и вырежи")]
     cards = [
-        (1, "Ресурс №1 — КРИСТАЛЛЫ ГЛУБИН", [
-            "Игроки заспавнились! Чтобы открыть",
-            "портал в Энд и призвать дракона, нужно",
-            "собрать 4 легендарных ресурса.",
+        ("Записка №1", "Ресурс №1 — КРИСТАЛЛЫ ГЛУБИН", [
+            "Игроки заспавнились!",
+            "Нужно собрать 4 легендарных ресурса,",
+            "чтобы открыть портал в Энд.",
+            "",
             "Ресурс №1 — КРИСТАЛЛЫ ГЛУБИН",
-            "Ищи там, где земля встречается с",
-            "камнем, а трава шепчет: копай здесь.",
-            "Подсказка: у бордюра, где любит",
-            "сидеть кот / где растёт самый",
-            "высокий куст.",
+            "Ищи там, где земля встречается",
+            "с камнем. Подсказка: у бордюра,",
+            "где любит сидеть кот.",
         ]),
-        (2, "Ресурс №2 — ПЛАМЯ ВЫНОСЛИВОСТИ", [
-            "Крафт активирован! Положи 3",
-            "кристалла в ячейки крафта —",
+        ("Записка №2", "Ресурс №2 — ПЛАМЯ ВЫНОСЛИВОСТИ", [
+            "Крафт активирован!",
+            "Положи 3 кристалла в ячейки —",
             "получишь Алмазный клинок.",
+            "",
             "--- Новое задание ---",
-            "Ресурс №2 — ПЛАМЯ ВЫНОСЛИВОСТИ",
             "Преодолей лавовый трек, не",
             "наступив на красное. Там, где",
             "ветки становятся мостом.",
         ]),
-        (3, "Ресурс №3 — СЛЁЗЫ МОБА", [
+        ("Записка №3", "Ресурс №3 — СЛЁЗЫ МОБА", [
             "Паркур пройден! Ты получил",
-            "ПЛАМЯ ВЫНОСЛИВОСТИ",
+            "ПЛАМЯ ВЫНОСЛИВОСТИ.",
+            "",
             "--- Новое задание ---",
-            "Ресурс №3 — СЛЁЗЫ МОБА",
-            "Иди туда, где живёт Зомби",
-            "(ориентир: дерево с лентой).",
-            "Победи его 3 мячами — он",
-            "выронит слезу.",
+            "Иди туда, где живёт Зомби.",
+            "Победи его 3 мячами —",
+            "он выронит слезу.",
         ]),
-        (4, "Ресурс №4 — ПЕРВОРОДНАЯ ПЫЛЬ", [
-            "Моб повержен! СЛЁЗЫ МОБА твои!",
+        ("Записка №4", "Ресурс №4 — ПЕРВОРОДНАЯ ПЫЛЬ", [
+            "Моб повержен! СЛЁЗЫ МОБА",
+            "твои!",
+            "",
             "--- Новое задание ---",
-            "Ресурс №4 — ПЕРВОРОДНАЯ ПЫЛЬ",
             "Ищи в самом неожиданном месте:",
-            "туда, куда ты обычно не смотришь.",
-            "(почтовый ящик / тайник под",
-            "крыльцом / коробка)",
+            "туда, куда ты обычно не",
+            "смотришь.",
         ]),
-        (5, "ФИНАЛ — ЭНДЕР-ДРАКОН", [
+        ("Записка №5", "ФИНАЛ — ЭНДЕР-ДРАКОН", [
             "Ресурс №5 уже у тебя — это",
-            "СИЛА ДВОИХ (вы в команде!).",
-            "Неси ВСЕ 4 ресурса к фиолетовому",
-            "порталу. Когда все на месте —",
+            "СИЛА ДВОИХ (вы в команде!)",
+            "",
+            "Неси ВСЕ 4 ресурса к",
+            "фиолетовому порталу.",
+            "Когда все на месте —",
             "появится ЭНДЕР-ДРАКОН!",
-            "Победи его и получишь ГЛАВНЫЙ",
-            "СУНДУК с подарками!",
         ]),
     ]
-    positions = [(8,12),(72,12),(136,12),(8,155),(72,155)]
-    cw, ch = 62, 140
-    for (num, title, body), (cx, cy) in zip(cards, positions):
-        parts.append(note_card(cx, cy, cw, ch, num, title, body))
-    parts.append(svg_footer())
+    positions = [(20, 30), (280, 30), (540, 30), (20, 600), (280, 600)]
+    cw, ch = 240, 500
+    for (num, title, lines), (cx, cy) in zip(cards, positions):
+        s.append(cut(cx-5, cy-5, cw+10, ch+10))
+        s.append(box(cx, cy, cw, ch, "#f5e6c8", "#8b6914"))
+        s.append(wb(cx+5, cy+5, cw-10, ch-10, ("#4a7b2a","#5a8c3a"), 3))
+        s.append(txt(cx+cw/2, cy+20, num, 16, "#5a3a1a", "middle", "bold"))
+        s.append(txt(cx+cw/2, cy+40, title, 14, "#3d2b0a", "middle", "bold"))
+        for i, line in enumerate(lines):
+            s.append(txt(cx+15, cy+80+i*24, line, 12, "#3d2b0a"))
+    s.append(txt(400, 1100, "Вырежи по пунктиру", 14, "#999", "middle"))
     with open(os.path.join(BASE, "01-zapiski-all.svg"), "w", encoding="utf-8") as f:
-        f.write('\n'.join(parts))
+        f.write('\n'.join(s))
     print("  01-zapiski-all.svg")
 
 
-def generate_diamonds():
-    parts = [svg_header("Алмазы — вырежи и раскрась голубым")]
-    positions = [(15, 15), (80, 15), (145, 15), (15, 110), (80, 110), (145, 110)]
-    dw, dh = 55, 85
+# ─── 2. DIAMONDS ──────────────────────────────────────────────
+def gen_diamonds():
+    s = [svg("Алмазы — вырежи, обведи на картоне, раскрась голубым")]
+    positions = [(90, 80), (400, 80), (90, 410), (400, 410), (90, 740), (400, 740)]
+    dw, dh = 200, 280
     for cx, cy in positions:
-        mx, my = cx + dw/2, cy + dh/2
-        pts = f'{mx},{my-30} {mx+15},{my-12} {mx+22},{my+5} {mx},{my+30} {mx-22},{my+5} {mx-15},{my-12}'
-        parts.append(f'<polygon points="{pts}" fill="#b8e8f8" stroke="#4a8ab8" stroke-width="1.5"/>')
-        parts.append(f'<line x1="{mx}" y1="{my-30}" x2="{mx}" y2="{my+30}" stroke="#6aadd8" stroke-width="0.5" opacity="0.5"/>')
-        parts.append(f'<line x1="{mx-15}" y1="{my-12}" x2="{mx+15}" y2="{my-12}" stroke="#6aadd8" stroke-width="0.5" opacity="0.5"/>')
-        parts.append(f'<polygon points="{mx-8},{my-28} {mx+8},{my-28} {mx+3},{my-22}" fill="white" opacity="0.6"/>')
-        parts.append(f'<text x="{mx}" y="{cy+dh-5}" {FS(7)} fill="#4a8ab8" text-anchor="middle">✦ АЛМАЗ ✦</text>')
-        parts.append(f'<rect x="{cx-2}" y="{cy-2}" width="{dw+4}" height="{dh+4}" stroke="#666" stroke-width="0.3" stroke-dasharray="3,2" fill="none"/>')
-    parts.append(f'<text x="105" y="285" {FS(6)} fill="#666" text-anchor="middle">Вырежи, обведи на картоне, покрась голубым акрилом</text>')
-    parts.append(svg_footer())
+        s.append(cut(cx-5, cy-5, dw+10, dh+10))
+        s.append(box(cx, cy, dw, dh, "#b8e8f8", "#4a8ab8", 3, 12))
+        # Diamond shape
+        pts = f'{cx+dw/2},{cy+60} {cx+dw/2+60},{cy+100} {cx+dw/2+80},{cy+130} {cx+dw/2},{cy+220} {cx+dw/2-80},{cy+130} {cx+dw/2-60},{cy+100}'
+        s.append(f'<polygon points="{pts}" fill="#c8e8f8" stroke="#4a8ab8" stroke-width="3"/>')
+        s.append(f'<line x1="{cx+dw/2}" y1="{cy+60}" x2="{cx+dw/2}" y2="{cy+220}" stroke="#6aadd8" stroke-width="2" opacity="0.5"/>')
+        s.append(f'<polygon points="{cx+dw/2-20},{cy+65} {cx+dw/2+20},{cy+65} {cx+dw/2+10},{cy+80}" fill="white" opacity="0.6"/>')
+        s.append(txt(cx+dw/2, cy+260, "✦ АЛМАЗ ✦", 22, "#4a8ab8", "middle", "bold"))
+        s.append(txt(cx+dw/2, cy+280, "Кристалл Глубины", 14, "#6aadd8", "middle"))
+    s.append(txt(400, 1100, "Вырежи → обведи на картоне → раскрась голубым акрилом", 14, "#999", "middle"))
     with open(os.path.join(BASE, "02-diamonds.svg"), "w", encoding="utf-8") as f:
-        f.write('\n'.join(parts))
+        f.write('\n'.join(s))
     print("  02-diamonds.svg")
 
 
-def generate_sword():
-    parts = [svg_header("Алмазный клинок — шаблон для картона (2 копии, склеить)")]
-    cx, cy = 105, 80
-    parts.append(f'<polygon points="{cx-9},{cy} {cx},{cy-150} {cx+9},{cy}" fill="#b0d8f0" stroke="#4a8ab8" stroke-width="1.5"/>')
-    parts.append(f'<polygon points="{cx},{cy-150} {cx+5},{cy} {cx+9},{cy}" fill="#8abce0" opacity="0.7"/>')
-    parts.append(f'<line x1="{cx}" y1="{cy-150}" x2="{cx}" y2="{cy+5}" stroke="white" stroke-width="1.5" opacity="0.5"/>')
-    parts.append(f'<polygon points="{cx-5},{cy-135} {cx+5},{cy-135} {cx+3},{cy-140}" fill="white" opacity="0.8"/>')
-    parts.append(f'<rect x="{cx-30}" y="{cy+5}" width="60" height="10" rx="2" fill="#5a3a1a" stroke="#3a2510" stroke-width="1"/>')
-    parts.append(f'<circle cx="{cx}" cy="{cy+7}" r="3" fill="#d4a84a"/>')
-    parts.append(f'<rect x="{cx-7}" y="{cy+15}" width="14" height="50" rx="2" fill="#3a2510" stroke="#2a1a08" stroke-width="1"/>')
-    for i in range(5):
-        gy = cy + 18 + i * 9
-        parts.append(f'<line x1="{cx-5}" y1="{gy}" x2="{cx+5}" y2="{gy}" stroke="#8b6914" stroke-width="1"/>')
-    parts.append(f'<circle cx="{cx}" cy="{cy+73}" r="8" fill="#4a8ab8" stroke="#3a6a98" stroke-width="1"/>')
-    parts.append(f'<circle cx="{cx}" cy="{cy+73}" r="3" fill="#8ad4f0"/>')
-    parts.append(f'<rect x="{cx-38}" y="{cy-158}" width="76" height="240" stroke="#666" stroke-width="0.3" stroke-dasharray="3,2" fill="none"/>')
-    parts.append(f'<text x="105" y="285" {FS(6)} fill="#666" text-anchor="middle">Длина ~65 см. Печатать 2 копии, склеить, перенести на картон, обклеить фольгой</text>')
-    parts.append(f'<text x="10" y="270" {FS(5)} fill="#666">1. Распечатай 2 копии  2. Склей по центру  3. Приложи к картону, обведи  4. Вырежи  5. Обклей фольгой</text>')
-    parts.append(svg_footer())
+# ─── 3. SWORD ─────────────────────────────────────────────────
+def gen_sword():
+    s = [svg("Алмазный клинок — шаблон (печатать 2 копии, склеить, на картон, в фольгу)")]
+    cx, cy = 400, 400
+    # Blade
+    s.append(f'<polygon points="{cx-45},{cy+50} {cx},{cy-250} {cx+45},{cy+50}" fill="#b0d8f0" stroke="#4a8ab8" stroke-width="4"/>')
+    s.append(f'<polygon points="{cx},{cy-250} {cx+30},{cy+50} {cx+45},{cy+50}" fill="#8abce0" opacity="0.6"/>')
+    s.append(f'<line x1="{cx}" y1="{cy-250}" x2="{cx}" y2="{cy+60}" stroke="white" stroke-width="4" opacity="0.4"/>')
+    s.append(f'<polygon points="{cx-25},{cy-220} {cx+25},{cy-220} {cx+15},{cy-230}" fill="white" opacity="0.7"/>')
+    # Guard
+    s.append(f'<rect x="{cx-120}" y="{cy+55}" width="240" height="40" rx="6" fill="#5a3a1a" stroke="#3a2510" stroke-width="3"/>')
+    s.append(f'<circle cx="{cx}" cy="{cy+75}" r="12" fill="#d4a84a"/>')
+    # Handle
+    s.append(f'<rect x="{cx-30}" y="{cy+95}" width="60" height="140" rx="8" fill="#3a2510" stroke="#2a1a08" stroke-width="3"/>')
+    for i in range(6):
+        gy = cy + 105 + i * 22
+        s.append(f'<line x1="{cx-20}" y1="{gy}" x2="{cx+20}" y2="{gy}" stroke="#8b6914" stroke-width="3"/>')
+    # Pommel
+    s.append(f'<circle cx="{cx}" cy="{cy+250}" r="30" fill="#4a8ab8" stroke="#3a6a98" stroke-width="3"/>')
+    s.append(f'<circle cx="{cx}" cy="{cy+250}" r="12" fill="#8ad4f0"/>')
+    # Cut outline
+    s.append(f'<rect x="{cx-140}" y="{cy-270}" width="280" height="540" fill="none" stroke="#888" stroke-width="1.5" stroke-dasharray="8,6"/>')
+    # Size
+    s.append(txt(400, 1100, "Длина ~65 см | Распечатай 2 копии → склей → на картон → обклей фольгой", 16, "#666", "middle"))
     with open(os.path.join(BASE, "03-diamond-sword.svg"), "w", encoding="utf-8") as f:
-        f.write('\n'.join(parts))
+        f.write('\n'.join(s))
     print("  03-diamond-sword.svg")
 
 
-def generate_lava():
-    parts = [svg_header("Лавовые блоки — A4 для паркура (заламинировать)")]
-    bw, bh, gap = 60, 60, 5
-    sx, sy = 10, 30
+# ─── 4. LAVA BLOCKS ───────────────────────────────────────────
+def gen_lava():
+    s = [svg("Лавовые блоки — для паркура (заламинировать)")]
     colors = ["#e84420","#e86020","#d43010","#f05030","#e84018","#f06020",
               "#cc3a18","#e85525","#f04820","#d44020","#e87030","#cc3010"]
-    for idx in range(12):
-        col, row = idx % 3, idx // 3
-        x = sx + col * (bw + gap)
-        y = sy + row * (bh + gap)
+    pos = [(60,60),(260,60),(460,60),(660,60),
+           (60,240),(260,240),(460,240),(660,240),
+           (60,420),(260,420),(460,420),(660,420)]
+    bw, bh = 160, 160
+    for idx, (x, y) in enumerate(pos):
         c = colors[idx]
-        parts.append(f'<rect x="{x}" y="{y}" width="{bw}" height="{bh}" rx="1" fill="{c}" stroke="#aa2a10" stroke-width="1"/>')
-        for _ in range(4):
-            sx2 = x + 10 + (idx * 7 + _ * 13) % 40
-            sy2 = y + 10 + (idx * 11 + _ * 17) % 40
-            ex = sx2 + (-1 if _%2==0 else 1) * (10 + _ * 5)
-            ey = sy2 + (-1 if _%3==0 else 1) * (10 + _ * 3)
-            parts.append(f'<line x1="{sx2}" y1="{sy2}" x2="{ex}" y2="{ey}" stroke="#ffcc00" stroke-width="1.5" opacity="0.7"/>')
-        parts.append(f'<ellipse cx="{x+bw/2}" cy="{y+bh/2}" rx="{bw/4}" ry="{bh/4}" fill="#ff8800" opacity="0.4"/>')
-        parts.append(f'<text x="{x+bw/2}" y="{y+bh-5}" {FS(5)} fill="#ffdd66" text-anchor="middle">НЕ НАСТУПАТЬ!</text>')
-    parts.append(f'<text x="105" y="285" {FS(6)} fill="#cc3300" text-anchor="middle">НАСТУПАТЬ НЕЛЬЗЯ — это лава!</text>')
-    parts.append(svg_footer())
+        s.append(f'<rect x="{x}" y="{y}" width="{bw}" height="{bh}" rx="4" fill="{c}" stroke="#aa2a10" stroke-width="3"/>')
+        s.append(f'<ellipse cx="{x+bw/2}" cy="{y+bh/2}" rx="{bw/3}" ry="{bh/3}" fill="#ff8800" opacity="0.3"/>')
+        # cracks
+        s.append(f'<line x1="{x+30}" y1="{y+30}" x2="{x+110}" y2="{y+100}" stroke="#ffcc00" stroke-width="4" opacity="0.6"/>')
+        s.append(f'<line x1="{x+100}" y1="{y+20}" x2="{x+40}" y2="{y+120}" stroke="#ffcc00" stroke-width="3" opacity="0.5"/>')
+        s.append(f'<line x1="{x+120}" y1="{y+110}" x2="{x+50}" y2="{y+40}" stroke="#ff8800" stroke-width="2" opacity="0.5"/>')
+        s.append(txt(x+bw/2, y+bh/2+8, "НЕ НАСТУПАТЬ!", 18, "#ffdd66", "middle", "bold"))
+    s.append(txt(400, 1100, "Разложить на земле — наступать нельзя! Заламинировать от дождя.", 16, "#cc3300", "middle", "bold"))
     with open(os.path.join(BASE, "04-lava-blocks.svg"), "w", encoding="utf-8") as f:
-        f.write('\n'.join(parts))
+        f.write('\n'.join(s))
     print("  04-lava-blocks.svg")
 
 
-def generate_hearts():
-    parts = [svg_header("Сердечки HP — по 5 на каждого игрока")]
-    hw, hh, gap = 40, 35, 8
-    sx, sy = 15, 30
-    for idx in range(12):
-        col, row = idx % 4, idx // 4
-        cx = sx + col * (hw + gap) + hw/2
-        cy = sy + row * (hh + gap) + hh/2
-        parts.append(f'<rect x="{cx-hw/2-3}" y="{cy-hh/2-3}" width="{hw+6}" height="{hh+6}" stroke="#666" stroke-width="0.3" stroke-dasharray="3,2" fill="none"/>')
-        r = 10
-        parts.append(f'<circle cx="{cx-6}" cy="{cy-5}" r="{r}" fill="#e83030" stroke="#aa1010" stroke-width="1.5"/>')
-        parts.append(f'<circle cx="{cx+6}" cy="{cy-5}" r="{r}" fill="#e83030" stroke="#aa1010" stroke-width="1.5"/>')
-        parts.append(f'<polygon points="{cx-13},{cy+3} {cx+13},{cy+3} {cx},{cy+15}" fill="#e83030" stroke="#aa1010" stroke-width="1.5"/>')
-        parts.append(f'<circle cx="{cx-4}" cy="{cy-8}" r="3" fill="white" opacity="0.5"/>')
-        parts.append(f'<text x="{cx}" y="{cy+hh/2-3}" {FS(5)} fill="#aa1010" text-anchor="middle">❤ HP</text>')
-    parts.append(f'<text x="105" y="285" {FS(6)} fill="#cc0000" text-anchor="middle">10 сердечек — по 5 каждому игроку</text>')
-    parts.append(svg_footer())
+# ─── 5. HEARTS ────────────────────────────────────────────────
+def gen_hearts():
+    s = [svg("Сердечки HP — по 5 на каждого игрока")]
+    for row in range(3):
+        for col in range(4):
+            cx, cy = 80 + col * 180, 80 + row * 320
+            s.append(cut(cx-10, cy-10, 160, 280))
+            # Heart shape
+            s.append(f'<circle cx="{cx+50}" cy="{cy+55}" r="45" fill="#e83030" stroke="#aa1010" stroke-width="4"/>')
+            s.append(f'<circle cx="{cx+110}" cy="{cy+55}" r="45" fill="#e83030" stroke="#aa1010" stroke-width="4"/>')
+            s.append(f'<polygon points="{cx+20},{cy+100} {cx+140},{cy+100} {cx+80},{cy+160}" fill="#e83030" stroke="#aa1010" stroke-width="4"/>')
+            s.append(f'<circle cx="{cx+60}" cy="{cy+30}" r="14" fill="white" opacity="0.4"/>')
+            s.append(txt(cx+80, cy+200, "❤ HP", 28, "#aa1010", "middle", "bold"))
+    s.append(txt(400, 1100, "10 сердечек — по 5 каждому игроку. Выдать перед финалом.", 14, "#999", "middle"))
     with open(os.path.join(BASE, "05-hp-hearts.svg"), "w", encoding="utf-8") as f:
-        f.write('\n'.join(parts))
+        f.write('\n'.join(s))
     print("  05-hp-hearts.svg")
 
 
-def generate_flame():
-    parts = [svg_header("Пламя выносливости — шаблон")]
-    for cx, cy in [(55, 80), (160, 80)]:
-        parts.append(f'<rect x="{cx-5}" y="{cy-5}" width="90" height="130" stroke="#666" stroke-width="0.3" stroke-dasharray="3,2" fill="none"/>')
-        parts.append(f'<polygon points="{cx+5},{cy+100} {cx+15},{cy+60} {cx+25},{cy+30} {cx+40},{cy+5} {cx+25},{cy-10} {cx+10},{cy+5} {cx},{cy+30} {cx-10},{cy+60} {cx+5},{cy+100}" fill="#ff8800" stroke="#ff6600" stroke-width="1"/>')
-        parts.append(f'<polygon points="{cx+8},{cy+85} {cx+15},{cy+55} {cx+20},{cy+25} {cx+30},{cy+8} {cx+20},{cy-5} {cx+8},{cy+5} {cx-2},{cy+30} {cx-5},{cy+55} {cx+8},{cy+85}" fill="#ffcc00" stroke="#ffaa00" stroke-width="0.8"/>')
-        parts.append(f'<polygon points="{cx+12},{cy+65} {cx+18},{cy+40} {cx+22},{cy+15} {cx+18},{cy+3} {cx+12},{cy+10} {cx+8},{cy+25} {cx+12},{cy+65}" fill="#ffee88" opacity="0.8"/>')
-        parts.append(f'<text x="{cx+40}" y="{cy+15}" {FS(7)} fill="#ff6600" text-anchor="middle">ПЛАМЯ</text>')
-        parts.append(f'<text x="{cx+40}" y="{cy+23}" {FS(5)} fill="#ff6600" text-anchor="middle">ВЫНОСЛИВОСТИ</text>')
-    parts.append(f'<text x="105" y="215" {FS(6)} fill="#666" text-anchor="middle">Вырежи 2 пламени, прикрепи к жёлтой мишуре</text>')
-    parts.append(f'<text x="105" y="225" {FS(5)} fill="#666" text-anchor="middle">Или используй как шаблон для фетра/фоамирана</text>')
-    for cx, cy in [(15, 235), (105, 235), (195, 235)]:
-        parts.append(f'<polygon points="{cx},{cy} {cx+5},{cy-20} {cx+12},{cy-35} {cx+8},{cy-45} {cx+2},{cy-30} {cx-3},{cy-20} {cx},{cy}" fill="#ff8800" stroke="#ff6600" stroke-width="0.8"/>')
-        parts.append(f'<polygon points="{cx+2},{cy-5} {cx+5},{cy-18} {cx+8},{cy-30} {cx+5},{cy-22} {cx+1},{cy-15} {cx-1},{cy-5} {cx+2},{cy-5}" fill="#ffcc00"/>')
-    parts.append(svg_footer())
+# ─── 6. FLAME ─────────────────────────────────────────────────
+def gen_flame():
+    s = [svg("Пламя выносливости — вырежи, прикрепи к мишуре")]
+    for i, (cx, cy) in enumerate([(200, 200), (600, 200)]):
+        s.append(cut(cx-100, cy-100, 200, 320))
+        # Outer flame
+        pts = f'{cx},{cy+120} {cx+30},{cy+60} {cx+60},{cy+10} {cx+90},{cy-30} {cx+60},{cy-60} {cx+20},{cy-30} {cx-20},{cy+10} {cx-30},{cy+60} {cx},{cy+120}'
+        s.append(f'<polygon points="{pts}" fill="#ff6600" stroke="#cc4400" stroke-width="3"/>')
+        # Inner flame
+        pts2 = f'{cx+5},{cy+100} {cx+25},{cy+55} {cx+45},{cy+15} {cx+65},{cy-20} {cx+45},{cy-45} {cx+15},{cy-20} {cx-5},{cy+15} {cx-15},{cy+55} {cx+5},{cy+100}'
+        s.append(f'<polygon points="{pts2}" fill="#ffcc00"/>')
+        # Core
+        pts3 = f'{cx+12},{cy+70} {cx+25},{cy+40} {cx+35},{cy+10} {cx+25},{cy-15} {cx+12},{cy+5} {cx+5},{cy+30} {cx+12},{cy+70}'
+        s.append(f'<polygon points="{pts3}" fill="#ffee88"/>')
+        s.append(txt(cx, cy-60, "ПЛАМЯ", 24, "#ff6600", "middle", "bold"))
+        s.append(txt(cx, cy-35, "ВЫНОСЛИВОСТИ", 14, "#ff6600", "middle"))
+    s.append(txt(400, 700, "Маленькие пламена (запасные)", 14, "#666", "middle"))
+    for cx, cy in [(100, 760), (300, 760), (500, 760), (700, 760)]:
+        s.append(f'<polygon points="{cx},{cy} {cx+15},{cy-30} {cx+30},{cy-55} {cx+20},{cy-70} {cx+5},{cy-50} {cx-5},{cy-30} {cx},{cy}" fill="#ff6600"/>')
+        s.append(f'<polygon points="{cx+5},{cy-5} {cx+12},{cy-28} {cx+20},{cy-48} {cx+15},{cy-60} {cx+5},{cy-40} {cx-2},{cy-25} {cx+5},{cy-5}" fill="#ffcc00"/>')
+    s.append(txt(400, 1100, "Вырежи 2 больших + запасные. Прикрепи к жёлтой мишуре.", 14, "#666", "middle"))
     with open(os.path.join(BASE, "06-flame-endurance.svg"), "w", encoding="utf-8") as f:
-        f.write('\n'.join(parts))
+        f.write('\n'.join(s))
     print("  06-flame-endurance.svg")
 
 
-def generate_tear():
-    parts = [svg_header("Слеза моба — этикетки для бусин")]
+# ─── 7. TEAR ──────────────────────────────────────────────────
+def gen_tear():
+    s = [svg("Слеза моба — этикетки для бусин (вырежи, наклей)")]
     for idx in range(8):
         col, row = idx % 4, idx // 4
-        cx, cy = 25 + col * 48, 30 + row * 65
-        parts.append(f'<rect x="{cx-3}" y="{cy-3}" width="44" height="58" stroke="#666" stroke-width="0.3" stroke-dasharray="3,2" fill="none"/>')
-        parts.append(rounded_rect(cx, cy, 40, 52, 3, "#e8e0f8", "#7a5a9a"))
-        tx, ty = cx + 20, cy + 15
-        parts.append(f'<circle cx="{tx}" cy="{ty}" r="8" fill="#6088c8" stroke="#4060a0" stroke-width="1"/>')
-        parts.append(f'<polygon points="{tx-4},{ty+8} {tx+4},{ty+8} {tx},{ty+18}" fill="#6088c8" stroke="#4060a0" stroke-width="1"/>')
-        parts.append(f'<circle cx="{tx-3}" cy="{ty-3}" r="2.5" fill="white" opacity="0.5"/>')
-        parts.append(f'<text x="{cx+20}" y="{cy+44}" {FS(5)} fill="#4060a0" text-anchor="middle">СЛЕЗА МОБА</text>')
-    parts.append(f'<text x="105" y="285" {FS(6)} fill="#4060a0" text-anchor="middle">Вырежи, наклей на синюю бусину или камешек</text>')
-    parts.append(svg_footer())
+        cx, cy = 40 + col * 180, 40 + row * 260
+        s.append(cut(cx-5, cy-5, 160, 230))
+        s.append(box(cx, cy, 150, 220, "#e8e0f8", "#7a5a9a", 3, 10))
+        # Tear
+        tx, ty = cx + 75, cy + 60
+        s.append(f'<circle cx="{tx}" cy="{ty}" r="30" fill="#6088c8" stroke="#4060a0" stroke-width="3"/>')
+        s.append(f'<polygon points="{tx-15},{ty+30} {tx+15},{ty+30} {tx},{ty+60}" fill="#6088c8" stroke="#4060a0" stroke-width="3"/>')
+        s.append(f'<circle cx="{tx-10}" cy="{ty-10}" r="10" fill="white" opacity="0.4"/>')
+        s.append(txt(cx+75, cy+130, "СЛЕЗА МОБА", 18, "#4060a0", "middle", "bold"))
+        s.append(txt(cx+75, cy+160, "💧", 30, "#4060a0", "middle"))
+    s.append(txt(400, 1100, "Вырежи, наклей на синюю бусину или камешек", 14, "#666", "middle"))
     with open(os.path.join(BASE, "07-mob-tear.svg"), "w", encoding="utf-8") as f:
-        f.write('\n'.join(parts))
+        f.write('\n'.join(s))
     print("  07-mob-tear.svg")
 
 
-def generate_chest_labels():
-    parts = [svg_header("Этикетки для сундуков")]
-    for i, (cx, cy) in enumerate([(15, 15), (110, 15)]):
-        parts.append(f'<rect x="{cx}" y="{cy}" width="90" height="120" stroke="#666" stroke-width="0.3" stroke-dasharray="3,2" fill="none"/>')
-        parts.append(rounded_rect(cx+2, cy+2, 86, 116, 3, "#b8956a", "#6b4f2e"))
-        for row in range(8):
-            for col in range(5):
-                bx = cx + 5 + col * 17 + (row % 2) * 8.5
-                by = cy + 10 + row * 14
-                parts.append(f'<rect x="{bx}" y="{by}" width="15" height="12" fill="#8b6914" rx="1" opacity="0.6"/>')
-        parts.append(f'<rect x="{cx+5}" y="{cy+30}" width="80" height="6" rx="1" fill="#888" stroke="#555" stroke-width="0.8"/>')
-        parts.append(f'<rect x="{cx+5}" y="{cy+70}" width="80" height="6" rx="1" fill="#888" stroke="#555" stroke-width="0.8"/>')
-        parts.append(f'<rect x="{cx+35}" y="{cy+50}" width="20" height="15" rx="2" fill="#c8a830" stroke="#a08820" stroke-width="1"/>')
-        parts.append(f'<circle cx="{cx+45}" cy="{cy+57}" r="3" fill="#a08820"/>')
-        if i == 0:
-            parts.append(f'<text x="{cx+45}" y="{cy+105}" {FS(7)} fill="#3d2b0a" text-anchor="middle">★ СУНДУК ★</text>')
-            parts.append(f'<text x="{cx+45}" y="{cy+113}" {FS(5)} fill="#3d2b0a" text-anchor="middle">(внутри ресурсы)</text>')
-        else:
-            parts.append(f'<text x="{cx+45}" y="{cy+105}" {FS(7)} fill="#3d2b0a" text-anchor="middle">ГЛАВНЫЙ СУНДУК</text>')
-            parts.append(f'<text x="{cx+45}" y="{cy+113}" {FS(5)} fill="#3d2b0a" text-anchor="middle">(подарки!)</text>')
-    for i, (cx, cy) in enumerate([(15, 155), (110, 155)]):
-        parts.append(f'<rect x="{cx}" y="{cy}" width="90" height="75" stroke="#666" stroke-width="0.3" stroke-dasharray="3,2" fill="none"/>')
-        parts.append(rounded_rect(cx+2, cy+2, 86, 71, 3, "#b8956a", "#6b4f2e"))
-        for row in range(5):
-            for col in range(5):
-                bx = cx + 5 + col * 17 + (row % 2) * 8.5
-                by = cy + 8 + row * 13
-                parts.append(f'<rect x="{bx}" y="{by}" width="15" height="11" fill="#8b6914" rx="1" opacity="0.5"/>')
-        parts.append(f'<rect x="{cx+35}" y="{cy+30}" width="20" height="12" rx="2" fill="#c8a830"/>')
-        parts.append(f'<circle cx="{cx+45}" cy="{cy+36}" r="2.5" fill="#a08820"/>')
-        items = ["СУНДУК РЕСУРСОВ", "ТАЙНИК"]
-        parts.append(f'<text x="{cx+45}" y="{cy+62}" {FS(7)} fill="#3d2b0a" text-anchor="middle">{items[i]}</text>')
-    parts.append(f'<text x="105" y="285" {FS(6)} fill="#666" text-anchor="middle">Вырежи, наклей на картонные коробки (обклеенные коричневой бумагой)</text>')
-    parts.append(svg_footer())
+# ─── 8. DRAGON MASK ───────────────────────────────────────────
+def gen_dragon():
+    s = [svg("Маска дракона — рога (стр.1) + накидка (стр.2) — вырежи из картона и ткани")]
+    # Page 1: Horns
+    s.append(txt(400, 40, "=== СТРАНИЦА 1: РОГА ===", 20, "#333", "middle", "bold"))
+    s.append(txt(400, 65, "Вырежи из картона, согни по линии, приклей скотчем к каске", 14, "#666", "middle"))
+    for i, (cx, cy) in enumerate([(200, 250), (600, 250)]):
+        s.append(cut(cx-130, cy-130, 260, 380))
+        hp = f'M{cx-60},{cy+120} L{cx-30},{cy+60} L{cx+10},{cy-10} L{cx},{cy-60} L{cx-20},{cy-90} L{cx+20},{cy-110} L{cx+80},{cy-130} Z'
+        s.append(f'<path d="{hp}" fill="#4a2a10" stroke="#3a1a08" stroke-width="4"/>')
+        for t in range(6):
+            ty2 = cy + 100 - t * 35
+            s.append(f'<line x1="{cx-50+t*5}" y1="{ty2}" x2="{cx-30+t*10}" y2="{ty2-10}" stroke="#6a3a18" stroke-width="2" opacity="0.5"/>')
+        s.append(txt(cx, cy-150, f'{"ЛЕВЫЙ" if i==0 else "ПРАВЫЙ"} РОГ', 18, "#333", "middle", "bold"))
+        s.append(f'<line x1="{cx-60}" y1="{cy+120}" x2="{cx+80}" y2="{cy+120}" stroke="#999" stroke-width="2" stroke-dasharray="6,4"/>')
+        s.append(txt(cx, cy+150, "Согни по линии", 12, "#999", "middle"))
+    s.append(txt(400, 510, "=== СТРАНИЦА 2: НАКИДКА ===", 20, "#333", "middle", "bold"))
+    s.append(txt(400, 535, "Вырежи из чёрной/фиолетовой ткани. Пришей завязки.", 14, "#666", "middle"))
+    # Cape
+    s.append(cut(40, 560, 720, 520))
+    s.append(f'<path d="M160,590 L80,1040 L720,1040 L640,590" fill="#3a1a5a" stroke="#5a2a7a" stroke-width="3" opacity="0.5"/>')
+    # scalloped bottom
+    for i in range(8):
+        sx = 80 + i * 80
+        s.append(f'<path d="M{sx},{1040} Q{sx+20},{1020} {sx+40},{1050}" fill="#3a1a5a" stroke="#5a2a7a" stroke-width="2" opacity="0.5"/>')
+    s.append(txt(400, 1080, "Пришей/приклей завязки по краям", 12, "#666", "middle"))
+    with open(os.path.join(BASE, "08-dragon-mask.svg"), "w", encoding="utf-8") as f:
+        f.write('\n'.join(s))
+    print("  08-dragon-mask.svg")
+
+
+# ─── 9. CHEST LABELS ──────────────────────────────────────────
+def gen_chests():
+    s = [svg("Этикетки для сундуков — вырежи, наклей на коробки")]
+    chests = [
+        (30, 30, "★ СУНДУК ★", "(внутри ресурсы)"),
+        (430, 30, "ГЛАВНЫЙ СУНДУК", "(подарки!)"),
+        (30, 600, "СУНДУК РЕСУРСОВ", ""),
+        (430, 600, "ТАЙНИК", ""),
+    ]
+    for cx, cy, title, sub in chests:
+        s.append(cut(cx-5, cy-5, 340, 500))
+        s.append(box(cx, cy, 330, 490, "#b8956a", "#6b4f2e", 3, 10))
+        # Brick pattern
+        for row in range(10):
+            for col in range(6):
+                bx = cx + 15 + col * 50 + (row % 2) * 25
+                by = cy + 20 + row * 46
+                s.append(f'<rect x="{bx}" y="{by}" width="45" height="38" rx="3" fill="#8b6914" opacity="0.6"/>')
+        # Iron bands
+        s.append(f'<rect x="{cx+15}" y="{cy+140}" width="300" height="20" rx="4" fill="#888" stroke="#555" stroke-width="2"/>')
+        s.append(f'<rect x="{cx+15}" y="{cy+320}" width="300" height="20" rx="4" fill="#888" stroke="#555" stroke-width="2"/>')
+        # Lock
+        s.append(f'<rect x="{cx+120}" y="{cy+220}" width="80" height="60" rx="8" fill="#c8a830" stroke="#a08820" stroke-width="3"/>')
+        s.append(f'<circle cx="{cx+160}" cy="{cy+250}" r="12" fill="#a08820"/>')
+        s.append(txt(cx+165, cy+460, title, 32, "#3d2b0a", "middle", "bold"))
+        if sub:
+            s.append(txt(cx+165, cy+490, sub, 16, "#3d2b0a", "middle"))
+    s.append(txt(400, 1100, "Наклей на картонные коробки, обклеенные коричневой бумагой", 14, "#666", "middle"))
     with open(os.path.join(BASE, "09-chest-labels.svg"), "w", encoding="utf-8") as f:
-        f.write('\n'.join(parts))
+        f.write('\n'.join(s))
     print("  09-chest-labels.svg")
 
 
-def generate_craft_grid():
-    parts = [svg_header("Крафт-станция — сетка 3×3 для стола")]
-    cs = 50
-    gx, gy = 30, 40
-    parts.append(f'<rect x="{gx-5}" y="{gy-5}" width="{cs*3+10}" height="{cs*3+10}" rx="3" fill="#f0e8d8" stroke="#8b6914" stroke-width="2"/>')
+# ─── 10. CRAFT GRID ───────────────────────────────────────────
+def gen_craft():
+    s = [svg("Крафт-станция 3×3 — для стола")]
+    s.append(box(50, 50, 700, 500, "#f0e8d8", "#8b6914", 4, 15))
+    s.append(txt(400, 30, "КРАФТ-СТАНОК 3×3", 28, "#6b4f2e", "middle", "bold"))
+    cs = 200
+    gx, gy = 100, 80
     for row in range(3):
         for col in range(3):
-            x, y = gx + col * cs, gy + row * cs
-            parts.append(f'<rect x="{x}" y="{y}" width="{cs}" height="{cs}" fill="#e0d4b8" stroke="#6b4f2e" stroke-width="1.5"/>')
+            x, y = gx + col * (cs+20), gy + row * (cs+20)
+            s.append(f'<rect x="{x}" y="{y}" width="{cs}" height="{cs}" fill="#e0d4b8" stroke="#6b4f2e" stroke-width="3"/>')
             if row == 0:
+                # Diamond slot
                 cx2, cy2 = x + cs/2, y + cs/2
-                pts = f'{cx2},{cy2-12} {cx2+10},{cy2-5} {cx2+14},{cy2+5} {cx2},{cy2+12} {cx2-14},{cy2+5} {cx2-10},{cy2-5}'
-                parts.append(f'<polygon points="{pts}" fill="#c8e8f8" stroke="#4a8ab8" opacity="0.7"/>')
-                parts.append(f'<text x="{cx2}" y="{cy2+8}" {FS(5)} fill="#4a8ab8" text-anchor="middle">✦</text>')
+                pts = f'{cx2},{cy2-40} {cx2+30},{cy2-15} {cx2+45},{cy2+20} {cx2},{cy2+40} {cx2-45},{cy2+20} {cx2-30},{cy2-15}'
+                s.append(f'<polygon points="{pts}" fill="#c8e8f8" stroke="#4a8ab8" stroke-width="2" opacity="0.8"/>')
+                s.append(txt(cx2, cy2+30, "✦", 24, "#4a8ab8", "middle"))
             else:
-                parts.append(f'<line x1="{x+8}" y1="{y+8}" x2="{x+cs-8}" y2="{y+cs-8}" stroke="#a09070" stroke-width="0.8" opacity="0.4"/>')
-                parts.append(f'<line x1="{x+cs-8}" y1="{y+8}" x2="{x+8}" y2="{y+cs-8}" stroke="#a09070" stroke-width="0.8" opacity="0.4"/>')
-    parts.append(f'<text x="{gx+cs*1.5}" y="{gy-10}" {FS(7)} fill="#6b4f2e" text-anchor="middle">КРАФТ-СТАНОК 3×3</text>')
-    parts.append(f'<text x="{gx+cs*1.5}" y="{gy+cs*3+15}" {FS(6)} fill="#6b4f2e" text-anchor="middle">Положи 3 алмаза в верхний ряд получи АЛМАЗНЫЙ КЛИНОК!</text>')
-    cx2, cy2 = 30, 200
-    parts.append(rounded_rect(cx2, cy2, 150, 65, 3, "#f5e6c8", "#8b6914"))
+                s.append(f'<line x1="{x+30}" y1="{y+30}" x2="{x+cs-30}" y2="{y+cs-30}" stroke="#a09070" stroke-width="2" opacity="0.4"/>')
+                s.append(f'<line x1="{x+cs-30}" y1="{y+30}" x2="{x+30}" y2="{y+cs-30}" stroke="#a09070" stroke-width="2" opacity="0.4"/>')
+    # Instruction box
+    s.append(box(50, 600, 700, 420, "#f5e6c8", "#8b6914", 3, 12))
+    s.append(txt(400, 635, "КАК РАБОТАЕТ КРАФТ", 22, "#6b4f2e", "middle", "bold"))
     lines = [
-        "КАК РАБОТАЕТ КРАФТ:",
-        "1. Игроки кладут 3 КРИСТАЛЛА ГЛУБИНЫ",
-        "   в верхние ячейки (ряд с алмазами).",
-        "2. Ведущий (мама/помощник) проверяет.",
-        "3. Вручает АЛМАЗНЫЙ КЛИНОК!",
-        "Рецепт: 3 × Кристалл Глубины = Клинок +1",
+        "1. Игроки кладут 3 КРИСТАЛЛА ГЛУБИНЫ в верхние ячейки (ряд с алмазами ✦).",
+        "2. Ведущий (мама/помощник) проверяет — ВСЁ ВЕРНО!",
+        "3. Вручает АЛМАЗНЫЙ КЛИНОК (картонный меч, обклеенный фольгой).",
+        "",
+        "★ Рецепт: 3 × Кристалл Глубины = Алмазный Клинок +1 ★",
     ]
-    for li, line in enumerate(lines):
-        parts.append(f'<text x="{cx2+8}" y="{cy2+10+li*6.5}" {FS(5.5)} fill="#3d2b0a">{line}</text>')
-    parts.append(svg_footer())
+    for i, line in enumerate(lines):
+        s.append(txt(70, 680+i*36, line, 16, "#3d2b0a"))
     with open(os.path.join(BASE, "10-craft-grid.svg"), "w", encoding="utf-8") as f:
-        f.write('\n'.join(parts))
+        f.write('\n'.join(s))
     print("  10-craft-grid.svg")
 
 
-def generate_progress_map():
-    parts = [svg_header("Карта прогресса — наклей собранные ресурсы (заламинировать)")]
-    parts.append(rounded_rect(5, 10, 200, 275, 5, "#f0e0c8", "#8b6914", 1.5))
-    parts.append(rounded_rect(25, 15, 160, 20, 3, "#c8a060", "#6b4f2e"))
-    parts.append(f'<text x="105" y="28" {FS(9)} fill="#3d2b0a" text-anchor="middle" font-weight="bold">КАРТА ПРОГРЕССА</text>')
-    sw, sh = 35, 45
-    sy = 55
+# ─── 11. PROGRESS MAP ─────────────────────────────────────────
+def gen_map():
+    s = [svg("Карта прогресса — наклей собранные ресурсы (заламинировать)")]
+    s.append(box(10, 10, 780, 1110, "#f0e0c8", "#8b6914", 4, 20))
+    s.append(txt(400, 45, "🗺 КАРТА ПРОГРЕССА", 36, "#3d2b0a", "middle", "bold"))
+    # 4 resource slots
+    sw, sh = 140, 160
+    sy = 80
     colors = ["#4a8ab8", "#ff8800", "#6088c8", "#a070d0"]
     labels = ["Кристаллы\nГлубины", "Пламя\nВыносливости", "Слёзы\nМоба", "Первородная\nПыль"]
     icons = ["💎", "🔥", "💧", "✨"]
     for i in range(4):
-        sx = 25 + i * 48
-        parts.append(rounded_rect(sx, sy, sw, sh, 3, "#e8dcc8", colors[i], 1.2))
-        parts.append(f'<text x="{sx+sw/2}" y="{sy+12}" {FS(7)} fill="{colors[i]}" text-anchor="middle">{icons[i]}</text>')
+        sx = 50 + i * 180
+        s.append(box(sx, sy, sw, sh, "#e8dcc8", colors[i], 3, 10))
+        s.append(txt(sx+sw/2, sy+35, icons[i], 30, colors[i], "middle"))
         for li, l in enumerate(labels[i].split('\n')):
-            parts.append(f'<text x="{sx+sw/2}" y="{sy+22+li*6}" {FS(5)} fill="#3d2b0a" text-anchor="middle">{l}</text>')
-        parts.append(f'<circle cx="{sx+sw/2}" cy="{sy+sh-7}" r="5" fill="white" stroke="#666" stroke-width="0.5" stroke-dasharray="2,2"/>')
-    px2, py2 = 105, 125
-    parts.append(f'<ellipse cx="{px2}" cy="{py2}" rx="40" ry="30" fill="none" stroke="#8844bb" stroke-width="3"/>')
-    parts.append(f'<ellipse cx="{px2}" cy="{py2}" rx="35" ry="25" fill="#6a30a0" opacity="0.3"/>')
-    parts.append(f'<ellipse cx="{px2}" cy="{py2}" rx="30" ry="20" fill="#9955cc" opacity="0.3"/>')
-    for a in range(0, 360, 30):
-        rad = math.radians(a)
-        px3 = px2 + 20 * math.cos(rad)
-        py3 = py2 + 12 * math.sin(rad)
-        ro = 1.5 if a % 60 == 0 else 1.0
-        parts.append(f'<circle cx="{px3}" cy="{py3}" r="{ro}" fill="#aa66dd" opacity="0.5"/>')
-    parts.append(f'<text x="{px2}" y="{py2-3}" {FS(7)} fill="#cc88ff" text-anchor="middle">ПОРТАЛ</text>')
-    parts.append(f'<text x="{px2}" y="{py2+5}" {FS(5)} fill="#cc88ff" text-anchor="middle">В ЭНД</text>')
-    ty = 175
-    parts.append(rounded_rect(20, ty, 170, 40, 3, "#e0d4b8", "#8b6914"))
-    parts.append(f'<text x="105" y="{ty+10}" {FS(7)} fill="#6b4f2e" text-anchor="middle">ИГРОКИ НА ТРОПЕ</text>')
+            s.append(txt(sx+sw/2, sy+70+li*28, l, 16, "#3d2b0a", "middle"))
+        s.append(f'<circle cx="{sx+sw/2}" cy="{sy+sh-20}" r="16" fill="white" stroke="#666" stroke-width="2" stroke-dasharray="4,3"/>')
+        s.append(txt(sx+sw/2, sy+sh-16, "✓", 16, "#999", "middle"))
+    # Portal
+    px2, py2 = 400, 300
+    s.append(f'<ellipse cx="{px2}" cy="{py2}" rx="120" ry="90" fill="none" stroke="#8844bb" stroke-width="6"/>')
+    s.append(f'<ellipse cx="{px2}" cy="{py2}" rx="100" ry="70" fill="#6a30a0" opacity="0.3"/>')
+    s.append(f'<ellipse cx="{px2}" cy="{py2}" rx="80" ry="50" fill="#9955cc" opacity="0.3"/>')
+    s.append(txt(px2, py2-10, "ПОРТАЛ", 28, "#cc88ff", "middle", "bold"))
+    s.append(txt(px2, py2+15, "В ЭНД", 20, "#cc88ff", "middle"))
+    # Players
+    ty = 500
+    s.append(box(20, ty, 760, 120, "#e0d4b8", "#8b6914", 3, 12))
+    s.append(txt(400, ty+30, "🏃 ИГРОКИ НА ТРОПЕ", 24, "#6b4f2e", "middle", "bold"))
     for i in range(2):
-        ax = 30 + i * 90
-        parts.append(f'<circle cx="{ax+15}" cy="{ty+28}" r="7" fill="#4a7b2a"/>')
-        parts.append(f'<text x="{ax}" y="{ty+28}" {FS(5)} fill="#3d2b0a">Игрок {i+1}: ______</text>')
-    sty = 225
-    parts.append(rounded_rect(10, sty, 190, 50, 3, "#f5ecc8", "#8b6914"))
-    parts.append(f'<text x="105" y="{sty+8}" {FS(7)} fill="#6b4f2e" text-anchor="middle">НАКЛЕЙКИ-СТИКЕРЫ (вырежи отдельно)</text>')
+        ax = 50 + i * 380
+        s.append(f'<circle cx="{ax+100}" cy="{ty+80}" r="30" fill="#4a7b2a"/>')
+        s.append(txt(ax, ty+85, f"Игрок {i+1}: ______", 18, "#3d2b0a"))
+    # Stickers
+    sty = 660
+    s.append(box(10, sty, 780, 180, "#f5ecc8", "#8b6914", 3, 15))
+    s.append(txt(400, sty+30, "📋 НАКЛЕЙКИ (вырежи отдельно)", 22, "#6b4f2e", "middle", "bold"))
     for i, (ic, co) in enumerate([("💎","#4a8ab8"),("🔥","#ff8800"),("💧","#6088c8"),("✨","#a070d0")]):
-        sx2 = 20 + i * 45
-        parts.append(f'<circle cx="{sx2+17}" cy="{sty+30}" r="8" stroke="#666" stroke-width="0.3" stroke-dasharray="3,2" fill="none"/>')
-        parts.append(f'<circle cx="{sx2+17}" cy="{sty+30}" r="7" fill="{co}" opacity="0.3"/>')
-        parts.append(f'<text x="{sx2+17}" y="{sty+32}" {FS(6)} fill="{co}" text-anchor="middle">{ic}</text>')
-        parts.append(f'<text x="{sx2+17}" y="{sty+45}" {FS(4.5)} fill="#666" text-anchor="middle">Ресурс {i+1}</text>')
-    parts.append(svg_footer())
+        sx2 = 50 + i * 180
+        s.append(f'<circle cx="{sx2+80}" cy="{sty+100}" r="35" fill="none" stroke="#888" stroke-width="1.5" stroke-dasharray="6,4"/>')
+        s.append(f'<circle cx="{sx2+80}" cy="{sty+100}" r="30" fill="{co}" opacity="0.3"/>')
+        s.append(txt(sx2+80, sty+105, ic, 28, co, "middle"))
+        s.append(txt(sx2+80, sty+150, f"Ресурс {i+1}", 14, "#666", "middle"))
+    # Info
+    s.append(txt(400, 1100, "По ходу квеста дети наклеивают стикеры на собранные ресурсы. Заламинировать!", 14, "#666", "middle"))
     with open(os.path.join(BASE, "11-progress-map.svg"), "w", encoding="utf-8") as f:
-        f.write('\n'.join(parts))
+        f.write('\n'.join(s))
     print("  11-progress-map.svg")
 
 
-def generate_signs():
-    parts = [svg_header("Таблички — SCP, obby, портал")]
-    for i, (cx, cy) in enumerate([(8, 12), (110, 12)]):
-        parts.append(f'<rect x="{cx-3}" y="{cy-3}" width="95" height="80" stroke="#666" stroke-width="0.3" stroke-dasharray="3,2" fill="none"/>')
-        parts.append(rounded_rect(cx, cy, 90, 75, 3, "#d8d8d8", "#666"))
-        parts.append(f'<rect x="{cx}" y="{cy}" width="90" height="15" fill="#cc2222" rx="3"/>')
-        parts.append(f'<text x="{cx+45}" y="{cy+10}" {FS(7)} fill="white" text-anchor="middle" font-weight="bold">⚠ SCP ОБЪЕКТ ⚠</text>')
-        parts.append(f'<circle cx="{cx+45}" cy="{cy+42}" r="15" fill="none" stroke="#333" stroke-width="2"/>')
-        parts.append(f'<circle cx="{cx+45}" cy="{cy+42}" r="8" fill="none" stroke="#333" stroke-width="1.5"/>')
-        parts.append(f'<path d="M{cx+37},{cy+42} L{cx+45},{cy+32} L{cx+53},{cy+42}" fill="none" stroke="#333" stroke-width="1.5"/>')
-        parts.append(f'<text x="{cx+45}" y="{cy+65}" {FS(7)} fill="#333" text-anchor="middle">ЗОМБИ-МОБ</text>')
-        parts.append(f'<text x="{cx+45}" y="{cy+72}" {FS(5)} fill="#666" text-anchor="middle">Победи 3 мячами!</text>')
-    for i, (cx, cy) in enumerate([(8, 105), (110, 105)]):
-        parts.append(f'<rect x="{cx-3}" y="{cy-3}" width="95" height="80" stroke="#666" stroke-width="0.3" stroke-dasharray="3,2" fill="none"/>')
-        parts.append(rounded_rect(cx, cy, 90, 75, 3, "#e8f0e8", "#4a8a3a"))
-        parts.append(f'<rect x="{cx}" y="{cy}" width="90" height="15" rx="3" fill="#4a8a3a"/>')
-        parts.append(f'<text x="{cx+45}" y="{cy+10}" {FS(7)} fill="white" text-anchor="middle" font-weight="bold">obby</text>')
-        parts.append(f'<text x="{cx+45}" y="{cy+38}" {FS(14)} fill="#4a8a3a" text-anchor="middle" font-weight="bold">ЭТАЖ {i+1}</text>')
-        parts.append(f'<rect x="{cx+30}" y="{cy+48}" width="10" height="20" fill="#cc4444" rx="1"/>')
-        parts.append(f'<text x="{cx+45}" y="{cy+65}" {FS(5)} fill="#4a8a3a" text-anchor="middle">ПРЕОДОЛЕЙ ЛАВУ!</text>')
-        parts.append(f'<text x="{cx+45}" y="{cy+72}" {FS(4.5)} fill="#666" text-anchor="middle">Не наступай на красное</text>')
-    parts.append(f'<rect x="8" y="200" width="195" height="80" stroke="#666" stroke-width="0.3" stroke-dasharray="3,2" fill="none"/>')
-    parts.append(rounded_rect(10, 202, 190, 76, 4, "#d8b0f0", "#7733aa", 2))
-    parts.append(f'<ellipse cx="105" cy="240" rx="50" ry="25" fill="#9955cc" opacity="0.3"/>')
-    parts.append(f'<ellipse cx="105" cy="240" rx="40" ry="20" fill="#bb77ee" opacity="0.3"/>')
-    parts.append(f'<path d="M60,280 Q105,220 150,280" fill="none" stroke="#aa44dd" stroke-width="3"/>')
-    parts.append(f'<path d="M65,280 Q105,228 145,280" fill="none" stroke="#cc66ff" stroke-width="1.5" opacity="0.6"/>')
-    parts.append(f'<text x="105" y="215" {FS(10)} fill="#aa44dd" text-anchor="middle" font-weight="bold">ПОРТАЛ В ЭНД</text>')
-    parts.append(f'<text x="105" y="228" {FS(7)} fill="#cc66ff" text-anchor="middle">THE VOID</text>')
-    parts.append(f'<text x="105" y="255" {FS(6)} fill="#7733aa" text-anchor="middle">Собери все 4 ресурса и возвращайся сюда!</text>')
-    parts.append(f'<text x="105" y="265" {FS(6)} fill="#7733aa" text-anchor="middle">Когда все на месте — появится ЭНДЕР-ДРАКОН</text>')
-    parts.append(svg_footer())
+# ─── 12. SIGNS ────────────────────────────────────────────────
+def gen_signs():
+    s = [svg("Таблички — SCP, obby, портал (вырежи, повесь)")]
+    # SCP signs
+    for i, (cx, cy) in enumerate([(30, 30), (430, 30)]):
+        s.append(cut(cx-5, cy-5, 340, 300))
+        s.append(box(cx, cy, 330, 290, "#d8d8d8", "#666", 3, 8))
+        s.append(f'<rect x="{cx}" y="{cy}" width="330" height="50" rx="8" fill="#cc2222"/>')
+        s.append(txt(cx+165, cy+30, "⚠ SCP ОБЪЕКТ ⚠", 24, "white", "middle", "bold"))
+        s.append(f'<circle cx="{cx+165}" cy="{cy+160}" r="50" fill="none" stroke="#333" stroke-width="6"/>')
+        s.append(f'<circle cx="{cx+165}" cy="{cy+160}" r="25" fill="none" stroke="#333" stroke-width="4"/>')
+        s.append(txt(cx+165, cy+250, "ЗОМБИ-МОБ", 22, "#333", "middle", "bold"))
+        s.append(txt(cx+165, cy+280, "Победи 3 мячами!", 14, "#666", "middle"))
+    # obby signs
+    for i, (cx, cy) in enumerate([(30, 380), (430, 380)]):
+        s.append(cut(cx-5, cy-5, 340, 300))
+        s.append(box(cx, cy, 330, 290, "#e8f0e8", "#4a8a3a", 3, 8))
+        s.append(f'<rect x="{cx}" y="{cy}" width="330" height="50" rx="8" fill="#4a8a3a"/>')
+        s.append(txt(cx+165, cy+30, "obby", 28, "white", "middle", "bold"))
+        s.append(txt(cx+165, cy+130, f"ЭТАЖ {i+1}", 60, "#4a8a3a", "middle", "bold"))
+        s.append(f'<rect x="{cx+110}" y="{cy+180}" width="40" height="70" fill="#cc4444" rx="4"/>')
+        s.append(f'<rect x="{cx+110}" y="{cy+170}" width="40" height="15" fill="#888" rx="2"/>')
+        s.append(txt(cx+165, cy+260, "ПРЕОДОЛЕЙ ЛАВУ!", 16, "#4a8a3a", "middle"))
+        s.append(txt(cx+165, cy+280, "Не наступай на красное", 12, "#666", "middle"))
+    # Portal sign
+    s.append(txt(400, 700, "=== ПОРТАЛ В ЭНД (большая табличка) ===", 22, "#7733aa", "middle", "bold"))
+    s.append(cut(30, 730, 740, 320))
+    s.append(box(30, 730, 740, 320, "#d8b0f0", "#7733aa", 4, 15))
+    s.append(f'<ellipse cx="400" cy="840" rx="180" ry="100" fill="#9955cc" opacity="0.3"/>')
+    s.append(f'<ellipse cx="400" cy="840" rx="140" ry="70" fill="#bb77ee" opacity="0.3"/>')
+    s.append(txt(400, 785, "🌀 ПОРТАЛ В ЭНД", 42, "#aa44dd", "middle", "bold"))
+    s.append(txt(400, 825, "THE VOID", 24, "#cc66ff", "middle", "bold"))
+    s.append(txt(400, 940, "Собери все 4 ресурса и возвращайся сюда!", 20, "#7733aa", "middle"))
+    s.append(txt(400, 975, "Когда все на месте — появится ЭНДЕР-ДРАКОН 🐉", 20, "#7733aa", "middle"))
     with open(os.path.join(BASE, "12-scp-obby-signs.svg"), "w", encoding="utf-8") as f:
-        f.write('\n'.join(parts))
+        f.write('\n'.join(s))
     print("  12-scp-obby-signs.svg")
 
 
-def generate_dragon_mask():
-    parts = [svg_header("Маска дракона — рога на каску + накидка")]
-    for i, (cx, cy) in enumerate([(15, 15), (110, 15)]):
-        w, h = 90, 120
-        parts.append(f'<rect x="{cx-3}" y="{cy-3}" width="{w+6}" height="{h+6}" stroke="#666" stroke-width="0.3" stroke-dasharray="3,2" fill="none"/>')
-        parts.append(f'<text x="{cx+5}" y="{cy+8}" {FS(7)} fill="#333">{"ЛЕВЫЙ" if i==0 else "ПРАВЫЙ"} РОГ — вырежи 2 шт из картона</text>')
-        hp = f'M{cx+5},{cy+h-15} L{cx+15},{cy+h-35} L{cx+20},{cy+h-55} L{cx+12},{cy+h-70} L{cx+5},{cy+h-85} L{cx+15},{cy+h-95} L{cx+35},{cy+h-105} Z'
-        parts.append(f'<path d="{hp}" fill="#4a2a10" stroke="#3a1a08" stroke-width="1.5"/>')
-        for t in range(6):
-            ty2 = cy + h - 25 - t * 14
-            parts.append(f'<line x1="{cx+8+t*2}" y1="{ty2}" x2="{cx+15+t*3}" y2="{ty2-5}" stroke="#6a3a18" stroke-width="0.8" opacity="0.5"/>')
-        parts.append(f'<line x1="{cx+5}" y1="{cy+h-15}" x2="{cx+30}" y2="{cy+h-15}" stroke="#999" stroke-width="0.2" stroke-dasharray="1,3"/>')
-        parts.append(f'<text x="{cx+40}" y="{cy+h-10}" {FS(5)} fill="#666">Согни по пунктиру, приклей скотчем к каске</text>')
-    cx2, cy2 = 10, 155
-    parts.append(f'<rect x="{cx2-3}" y="{cy2-3}" width="190" height="130" stroke="#666" stroke-width="0.3" stroke-dasharray="3,2" fill="none"/>')
-    parts.append(f'<text x="105" y="{cy2+8}" {FS(7)} fill="#333" text-anchor="middle">НАКИДКА ДРАКОНА — из чёрной/фиолетовой ткани</text>')
-    cw2, cw3, ch2 = 160, 200, 110
-    cc = cx2 + 95
-    ty2 = cy2 + 15
-    by2 = ty2 + ch2
-    parts.append(f'<path d="M{cc-cw2/2},{ty2} L{cc-cw3/2},{by2} L{cc+cw3/2},{by2} L{cc+cw2/2},{ty2} Z" fill="#3a1a5a" stroke="#5a2a7a" stroke-width="1.5" opacity="0.5"/>')
-    for s in range(8):
-        sx2 = cc - cw3/2 + s * (cw3/8)
-        sy2 = by2 + 6 * (s % 2)
-        parts.append(f'<path d="M{sx2},{by2} Q{sx2+6},{by2-10} {sx2+12},{by2+5}" fill="#3a1a5a" stroke="#5a2a7a" stroke-width="0.5" opacity="0.5"/>')
-    parts.append(f'<text x="105" y="{by2+20}" {FS(5)} fill="#666" text-anchor="middle">Пришей/приклей завязки по краям. Длина ~110 см</text>')
-    parts.append(svg_footer())
-    with open(os.path.join(BASE, "08-dragon-mask.svg"), "w", encoding="utf-8") as f:
-        f.write('\n'.join(parts))
-    print("  08-dragon-mask.svg")
-
-
-def generate_obby_numbers():
-    parts = [svg_header("Obby — номера этажей для паркура")]
-    for i in range(5):
-        cx = 8 + (i % 3) * 68
-        cy = 15 + (i // 3) * 95
-        parts.append(f'<rect x="{cx-3}" y="{cy-3}" width="62" height="85" stroke="#666" stroke-width="0.3" stroke-dasharray="3,2" fill="none"/>')
-        parts.append(rounded_rect(cx, cy, 58, 80, 3, "#d8f0d8", "#3a7a2a"))
-        parts.append(f'<rect x="{cx}" y="{cy}" width="58" height="18" rx="3" fill="#3a7a2a"/>')
-        parts.append(f'<text x="{cx+29}" y="{cy+12}" {FS(7)} fill="white" text-anchor="middle">obby</text>')
-        parts.append(f'<text x="{cx+29}" y="{cy+52}" {FS(20)} fill="#3a7a2a" text-anchor="middle" font-weight="bold">{i+1}</text>')
-        parts.append(f'<rect x="{cx+42}" y="{cy+60}" width="8" height="18" fill="#44aa44" rx="1"/>')
-        parts.append(f'<text x="{cx+29}" y="{cy+75}" {FS(4.5)} fill="#3a7a2a" text-anchor="middle">ЧЕКПОИНТ</text>')
-    parts.append(svg_footer())
+# ─── 13. OBBY FLOOR SIGNS ─────────────────────────────────────
+def gen_obby():
+    s = [svg("Obby — номера этажей для паркура")]
+    pos = [(80, 80), (400, 80), (80, 420), (400, 420), (240, 760)]
+    for i, (cx, cy) in enumerate(pos):
+        s.append(cut(cx-10, cy-10, 280, 310))
+        s.append(box(cx, cy, 260, 290, "#d8f0d8", "#3a7a2a", 3, 10))
+        s.append(f'<rect x="{cx}" y="{cy}" width="260" height="55" rx="10" fill="#3a7a2a"/>')
+        s.append(txt(cx+130, cy+33, "obby", 26, "white", "middle", "bold"))
+        s.append(txt(cx+130, cy+190, f"{i+1}", 90, "#3a7a2a", "middle", "bold"))
+        s.append(f'<rect x="{cx+190}" y="{cy+220}" width="30" height="60" fill="#44aa44" rx="4"/>')
+        s.append(txt(cx+130, cy+270, "ЧЕКПОИНТ", 16, "#3a7a2a", "middle"))
     with open(os.path.join(BASE, "13-obby-floor-signs.svg"), "w", encoding="utf-8") as f:
-        f.write('\n'.join(parts))
+        f.write('\n'.join(s))
     print("  13-obby-floor-signs.svg")
 
 
-def generate_chest_wrap():
-    parts = [svg_header("Обклейка для сундуков — текстура под дерево (4+ листа)")]
-    bw, bh, mort = 30, 14, 2
+# ─── 14. CHEST WRAP ───────────────────────────────────────────
+def gen_wrap():
+    s = [svg("Обклейка для сундуков — текстура под дерево (печатать 4+ листов)")]
+    bw, bh, gap = 100, 50, 6
     for row in range(18):
         for col in range(7):
-            bx = 3 + col * (bw + mort) + (row % 2) * ((bw + mort) / 2)
-            by = 25 + row * (bh + mort)
-            if bx + bw > 207:
+            bx = 8 + col * (bw + gap) + (row % 2) * ((bw + gap) / 2)
+            by = 30 + row * (bh + gap)
+            if bx + bw > 790:
                 continue
             shade = ["#b8956a","#c8a070","#a08050","#b89060","#c0a068","#b08858","#c8a870"][(row+col)%7]
-            parts.append(f'<rect x="{bx}" y="{by}" width="{bw}" height="{bh}" rx="1" fill="{shade}" stroke="#8b6914" stroke-width="0.5"/>')
+            s.append(f'<rect x="{bx}" y="{by}" width="{bw}" height="{bh}" rx="4" fill="{shade}" stroke="#8b6914" stroke-width="2"/>')
             if (row+col)%3 == 0:
-                parts.append(f'<line x1="{bx+5}" y1="{by+3}" x2="{bx+bw-5}" y2="{by+bh-3}" stroke="#7a5a30" stroke-width="0.3" opacity="0.4"/>')
-    parts.append(f'<text x="105" y="285" {FS(6)} fill="#6b4f2e" text-anchor="middle">Распечатай 4+ листа, обклей коробки — получатся сундуки</text>')
-    parts.append(svg_footer())
+                s.append(f'<line x1="{bx+20}" y1="{by+12}" x2="{bx+bw-20}" y2="{by+bh-12}" stroke="#7a5a30" stroke-width="2" opacity="0.4"/>')
+    s.append(txt(400, 1100, "Обклей коробки — получатся сундуки", 16, "#6b4f2e", "middle", "bold"))
     with open(os.path.join(BASE, "14-chest-wrap.svg"), "w", encoding="utf-8") as f:
-        f.write('\n'.join(parts))
+        f.write('\n'.join(s))
     print("  14-chest-wrap.svg")
 
 
+# ─── MAIN ─────────────────────────────────────────────────────
 if __name__ == "__main__":
     os.makedirs(BASE, exist_ok=True)
-    print("Генерация SVG...")
-    for name, fn in [("01-zapiski-all.svg", generate_notes),
-                     ("02-diamonds.svg", generate_diamonds),
-                     ("03-diamond-sword.svg", generate_sword),
-                     ("04-lava-blocks.svg", generate_lava),
-                     ("05-hp-hearts.svg", generate_hearts),
-                     ("06-flame-endurance.svg", generate_flame),
-                     ("07-mob-tear.svg", generate_tear),
-                     ("08-dragon-mask.svg", generate_dragon_mask),
-                     ("09-chest-labels.svg", generate_chest_labels),
-                     ("10-craft-grid.svg", generate_craft_grid),
-                     ("11-progress-map.svg", generate_progress_map),
-                     ("12-scp-obby-signs.svg", generate_signs),
-                     ("13-obby-floor-signs.svg", generate_obby_numbers),
-                     ("14-chest-wrap.svg", generate_chest_wrap)]:
-        fn()
-    print("Готово! Все 14 SVG в одной папке materials/")
+    print("Генерация SVG (viewBox 800x1131, px-шрифты)...")
+    gen_notes()
+    gen_diamonds()
+    gen_sword()
+    gen_lava()
+    gen_hearts()
+    gen_flame()
+    gen_tear()
+    gen_dragon()
+    gen_chests()
+    gen_craft()
+    gen_map()
+    gen_signs()
+    gen_obby()
+    gen_wrap()
+    print("Готово! 14 SVG-файлов в materials/")

@@ -1,34 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" width="210mm" height="297mm" viewBox="0 0 210 297">
-<defs>
-<style>
-  @page { margin: 0; }
-  svg { background: white; }
-  text { font-family: 'Segoe UI', 'Arial', sans-serif; }
-</style>
-</defs>
-<rect width="210" height="297" fill="white"/>
-<text x="15" y="10" font-size="6" font-weight="bold" fill="#999">Пламя выносливости — шаблон</text>
-<line x1="15" y1="11" x2="195" y2="11" stroke="#ccc" stroke-width="0.3"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1131">
+<rect width="800" height="1131" fill="#ffffff"/>
+<rect x="0" y="0" width="800" height="24" fill="#4a7b2a"/>
+<text x="20" y="17" font-size="16" fill="#ffffff" font-family="Arial,sans-serif">Пламя выносливости — вырежи, прикрепи к мишуре</text>
 
-<rect x="50" y="75" width="90" height="130" stroke="#666" stroke-width="0.3" stroke-dasharray="3,2" fill="none"/>
-<polygon points="60,180 70,140 80,110 95,85 80,70 65,85 55,110 45,140 60,180" fill="#ff8800" stroke="#ff6600" stroke-width="1"/>
-<polygon points="63,165 70,135 75,105 85,88 75,75 63,85 53,110 50,135 63,165" fill="#ffcc00" stroke="#ffaa00" stroke-width="0.8"/>
-<polygon points="67,145 73,120 77,95 73,83 67,90 63,105 67,145" fill="#ffee88" opacity="0.8"/>
-<text x="95" y="95" font-size="7" fill="#ff6600" text-anchor="middle">ПЛАМЯ</text>
-<text x="95" y="103" font-size="5" fill="#ff6600" text-anchor="middle">ВЫНОСЛИВОСТИ</text>
-<rect x="155" y="75" width="90" height="130" stroke="#666" stroke-width="0.3" stroke-dasharray="3,2" fill="none"/>
-<polygon points="165,180 175,140 185,110 200,85 185,70 170,85 160,110 150,140 165,180" fill="#ff8800" stroke="#ff6600" stroke-width="1"/>
-<polygon points="168,165 175,135 180,105 190,88 180,75 168,85 158,110 155,135 168,165" fill="#ffcc00" stroke="#ffaa00" stroke-width="0.8"/>
-<polygon points="172,145 178,120 182,95 178,83 172,90 168,105 172,145" fill="#ffee88" opacity="0.8"/>
-<text x="200" y="95" font-size="7" fill="#ff6600" text-anchor="middle">ПЛАМЯ</text>
-<text x="200" y="103" font-size="5" fill="#ff6600" text-anchor="middle">ВЫНОСЛИВОСТИ</text>
-<text x="105" y="215" font-size="6" fill="#666" text-anchor="middle">Вырежи 2 пламени, прикрепи к жёлтой мишуре</text>
-<text x="105" y="225" font-size="5" fill="#666" text-anchor="middle">Или используй как шаблон для фетра/фоамирана</text>
-<polygon points="15,235 20,215 27,200 23,190 17,205 12,215 15,235" fill="#ff8800" stroke="#ff6600" stroke-width="0.8"/>
-<polygon points="17,230 20,217 23,205 20,213 16,220 14,230 17,230" fill="#ffcc00"/>
-<polygon points="105,235 110,215 117,200 113,190 107,205 102,215 105,235" fill="#ff8800" stroke="#ff6600" stroke-width="0.8"/>
-<polygon points="107,230 110,217 113,205 110,213 106,220 104,230 107,230" fill="#ffcc00"/>
-<polygon points="195,235 200,215 207,200 203,190 197,205 192,215 195,235" fill="#ff8800" stroke="#ff6600" stroke-width="0.8"/>
-<polygon points="197,230 200,217 203,205 200,213 196,220 194,230 197,230" fill="#ffcc00"/>
-</svg>
+<rect x="100" y="100" width="200" height="320" fill="none" stroke="#888" stroke-width="1" stroke-dasharray="6,4"/>
+<polygon points="200,320 230,260 260,210 290,170 260,140 220,170 180,210 170,260 200,320" fill="#ff6600" stroke="#cc4400" stroke-width="3"/>
+<polygon points="205,300 225,255 245,215 265,180 245,155 215,180 195,215 185,255 205,300" fill="#ffcc00"/>
+<polygon points="212,270 225,240 235,210 225,185 212,205 205,230 212,270" fill="#ffee88"/>
+<text x="200" y="140" font-size="24" fill="#ff6600" font-family="Arial,sans-serif" text-anchor="middle" font-weight="bold">ПЛАМЯ</text>
+<text x="200" y="165" font-size="14" fill="#ff6600" font-family="Arial,sans-serif" text-anchor="middle" font-weight="normal">ВЫНОСЛИВОСТИ</text>
+<rect x="500" y="100" width="200" height="320" fill="none" stroke="#888" stroke-width="1" stroke-dasharray="6,4"/>
+<polygon points="600,320 630,260 660,210 690,170 660,140 620,170 580,210 570,260 600,320" fill="#ff6600" stroke="#cc4400" stroke-width="3"/>
+<polygon points="605,300 625,255 645,215 665,180 645,155 615,180 595,215 585,255 605,300" fill="#ffcc00"/>
+<polygon points="612,270 625,240 635,210 625,185 612,205 605,230 612,270" fill="#ffee88"/>
+<text x="600" y="140" font-size="24" fill="#ff6600" font-family="Arial,sans-serif" text-anchor="middle" font-weight="bold">ПЛАМЯ</text>
+<text x="600" y="165" font-size="14" fill="#ff6600" font-family="Arial,sans-serif" text-anchor="middle" font-weight="normal">ВЫНОСЛИВОСТИ</text>
+<text x="400" y="700" font-size="14" fill="#666" font-family="Arial,sans-serif" text-anchor="middle" font-weight="normal">Маленькие пламена (запасные)</text>
+<polygon points="100,760 115,730 130,705 120,690 105,710 95,730 100,760" fill="#ff6600"/>
+<polygon points="105,755 112,732 120,712 115,700 105,720 98,735 105,755" fill="#ffcc00"/>
+<polygon points="300,760 315,730 330,705 320,690 305,710 295,730 300,760" fill="#ff6600"/>
+<polygon points="305,755 312,732 320,712 315,700 305,720 298,735 305,755" fill="#ffcc00"/>
+<polygon points="500,760 515,730 530,705 520,690 505,710 495,730 500,760" fill="#ff6600"/>
+<polygon points="505,755 512,732 520,712 515,700 505,720 498,735 505,755" fill="#ffcc00"/>
+<polygon points="700,760 715,730 730,705 720,690 705,710 695,730 700,760" fill="#ff6600"/>
+<polygon points="705,755 712,732 720,712 715,700 705,720 698,735 705,755" fill="#ffcc00"/>
+<text x="400" y="1100" font-size="14" fill="#666" font-family="Arial,sans-serif" text-anchor="middle" font-weight="normal">Вырежи 2 больших + запасные. Прикрепи к жёлтой мишуре.</text>
