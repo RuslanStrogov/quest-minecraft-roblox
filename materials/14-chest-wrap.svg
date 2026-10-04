@@ -3,18 +3,13 @@
 <defs>
 <style>
   @page { margin: 0; }
+  svg { background: white; }
   text { font-family: 'Segoe UI', 'Arial', sans-serif; }
-  .title { font-size: 7mm; font-weight: bold; }
-  .sub { font-size: 4.5mm; }
-  .body { font-size: 3.5mm; }
-  .small { font-size: 2.8mm; }
-  .cutline { stroke: #666; stroke-width: 0.3; stroke-dasharray: 3,2; fill: none; }
-  .foldline { stroke: #999; stroke-width: 0.2; stroke-dasharray: 1,3; fill: none; }
 </style>
 </defs>
 <rect width="210" height="297" fill="white"/>
-<text x="15" y="12" class="title" fill="#333">Обклейка для сундуков — коричневая текстура «под дерево» (4 листа)</text>
-<line x1="15" y1="13.5" x2="195" y2="13.5" stroke="#ccc" stroke-width="0.3"/>
+<text x="15" y="10" font-size="6" font-weight="bold" fill="#999">Обклейка для сундуков — текстура под дерево (4+ листа)</text>
+<line x1="15" y1="11" x2="195" y2="11" stroke="#ccc" stroke-width="0.3"/>
 
 <rect x="3.0" y="25" width="30" height="14" rx="1" fill="#b8956a" stroke="#8b6914" stroke-width="0.5"/>
 <line x1="8.0" y1="28" x2="28.0" y2="36" stroke="#7a5a30" stroke-width="0.3" opacity="0.4"/>
@@ -148,5 +143,5 @@
 <rect x="115.0" y="297" width="30" height="14" rx="1" fill="#c8a870" stroke="#8b6914" stroke-width="0.5"/>
 <rect x="147.0" y="297" width="30" height="14" rx="1" fill="#b8956a" stroke="#8b6914" stroke-width="0.5"/>
 <line x1="152.0" y1="300" x2="172.0" y2="308" stroke="#7a5a30" stroke-width="0.3" opacity="0.4"/>
-<text x="105" y="285" class="body" fill="#6b4f2e" text-anchor="middle">Распечатай 4+ листа, обклей коробки — получатся сундуки</text>
+<text x="105" y="285" font-size="6" fill="#6b4f2e" text-anchor="middle">Распечатай 4+ листа, обклей коробки — получатся сундуки</text>
 </svg>

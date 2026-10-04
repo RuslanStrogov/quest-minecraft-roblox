@@ -2,13 +2,16 @@
 
 Уличный квест для детей 4–8 лет. 6 этапов, 40 минут, реквизит за вечер своими руками.
 
-**[📄 Скачать полную инструкцию](instructions.md) · [🖨️ Печатная версия PDF](instructions.pdf)**
+**📦 Яндекс.Диск:** https://disk.yandex.ru/d/znFIwhjMpCYjzA
+**🐙 Репозиторий:** [github.com/RuslanStrogov/quest-minecraft-roblox](https://github.com/RuslanStrogov/quest-minecraft-roblox)
+
+**[📄 Полная инструкция (MD)](instructions.md) · [🖨️ PDF-версия](instructions.pdf) · [📑 Краткая PDF](README.pdf)**
 
 ---
 
-## Файлы для печати (папка `materials/`)
+## Файлы для печати (`materials/`)
 
-SVG — открыть браузером → Ctrl+P → печать. Цветная, книжная, масштаб 95–100%.
+SVG — открыть браузером (Chrome/Edge) → Ctrl+P → печать. Цветная, книжная, масштаб 100%.
 
 | Файл | Что это | Листов |
 |---|---|---|

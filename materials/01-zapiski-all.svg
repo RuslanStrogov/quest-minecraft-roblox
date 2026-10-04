@@ -3,18 +3,13 @@
 <defs>
 <style>
   @page { margin: 0; }
+  svg { background: white; }
   text { font-family: 'Segoe UI', 'Arial', sans-serif; }
-  .title { font-size: 7mm; font-weight: bold; }
-  .sub { font-size: 4.5mm; }
-  .body { font-size: 3.5mm; }
-  .small { font-size: 2.8mm; }
-  .cutline { stroke: #666; stroke-width: 0.3; stroke-dasharray: 3,2; fill: none; }
-  .foldline { stroke: #999; stroke-width: 0.2; stroke-dasharray: 1,3; fill: none; }
 </style>
 </defs>
 <rect width="210" height="297" fill="white"/>
-<text x="15" y="12" class="title" fill="#333">Записки для квеста — распечатай и вырежи</text>
-<line x1="15" y1="13.5" x2="195" y2="13.5" stroke="#ccc" stroke-width="0.3"/>
+<text x="15" y="10" font-size="6" font-weight="bold" fill="#999">Записки для квеста — распечатай и вырежи</text>
+<line x1="15" y1="11" x2="195" y2="11" stroke="#ccc" stroke-width="0.3"/>
 
 <rect x="9" y="13" width="62" height="140" rx="2" fill="rgba(0,0,0,0.15)"/>
 <rect x="8" y="12" width="62" height="140" rx="2" fill="#f5e6c8" stroke="#8b6914" stroke-width="0.5"/>
@@ -213,20 +208,18 @@
 <rect x="10" y="148" width="2" height="2" fill="#7b3a1a"/>
 <rect x="66" y="148" width="2" height="2" fill="#5a3a1a"/>
 <circle cx="62" cy="20" r="4" fill="#d4c49a" stroke="#8b6914" stroke-width="0.3"/>
-<text x="14" y="19" class="sub" fill="#5a3a1a" font-weight="bold">Записка №1</text>
-<text x="14" y="24" class="body" fill="#3d2b0a" font-weight="bold">Ресурс №1 — КРИСТАЛЛЫ ГЛУБИН</text>
-<text x="14" y="29" class="small" fill="#3d2b0a">Игроки заспавнились! Чтобы открыть</text>
-<text x="14" y="32.8" class="small" fill="#3d2b0a">портал в Энд и призвать дракона, нужно</text>
-<text x="14" y="36.599999999999994" class="small" fill="#3d2b0a">собрать 4 легендарных ресурса.</text>
-<text x="14" y="40.39999999999999" class="small" fill="#3d2b0a"></text>
-<text x="14" y="44.19999999999999" class="small" fill="#3d2b0a">Ресурс №1 — КРИСТАЛЛЫ ГЛУБИН</text>
-<text x="14" y="47.999999999999986" class="small" fill="#3d2b0a">Ищи там, где земля встречается с</text>
-<text x="14" y="51.79999999999998" class="small" fill="#3d2b0a">камнем, а трава шепчет: «копай здесь».</text>
-<text x="14" y="55.59999999999998" class="small" fill="#3d2b0a"></text>
-<text x="14" y="59.39999999999998" class="small" fill="#3d2b0a">Подсказка: у бордюра, где любит</text>
-<text x="14" y="63.199999999999974" class="small" fill="#3d2b0a">сидеть кот / где растёт самый</text>
-<text x="14" y="66.99999999999997" class="small" fill="#3d2b0a">высокий куст.</text>
-<rect x="7.5" y="11.5" width="63" height="141" class="cutline"/>
+<text x="14" y="19" font-size="8" fill="#5a3a1a" font-weight="bold">Записка №1</text>
+<text x="14" y="24" font-size="7" fill="#3d2b0a" font-weight="bold">Ресурс №1 — КРИСТАЛЛЫ ГЛУБИН</text>
+<text x="14" y="29" font-size="5.5" fill="#3d2b0a">Игроки заспавнились! Чтобы открыть</text>
+<text x="14" y="32.8" font-size="5.5" fill="#3d2b0a">портал в Энд и призвать дракона, нужно</text>
+<text x="14" y="36.599999999999994" font-size="5.5" fill="#3d2b0a">собрать 4 легендарных ресурса.</text>
+<text x="14" y="40.39999999999999" font-size="5.5" fill="#3d2b0a">Ресурс №1 — КРИСТАЛЛЫ ГЛУБИН</text>
+<text x="14" y="44.19999999999999" font-size="5.5" fill="#3d2b0a">Ищи там, где земля встречается с</text>
+<text x="14" y="47.999999999999986" font-size="5.5" fill="#3d2b0a">камнем, а трава шепчет: копай здесь.</text>
+<text x="14" y="51.79999999999998" font-size="5.5" fill="#3d2b0a">Подсказка: у бордюра, где любит</text>
+<text x="14" y="55.59999999999998" font-size="5.5" fill="#3d2b0a">сидеть кот / где растёт самый</text>
+<text x="14" y="59.39999999999998" font-size="5.5" fill="#3d2b0a">высокий куст.</text>
+<rect x="7.5" y="11.5" width="63" height="141" stroke="#666" stroke-width="0.3" stroke-dasharray="3,2" fill="none"/>
 <rect x="73" y="13" width="62" height="140" rx="2" fill="rgba(0,0,0,0.15)"/>
 <rect x="72" y="12" width="62" height="140" rx="2" fill="#f5e6c8" stroke="#8b6914" stroke-width="0.5"/>
 <rect x="74" y="14" width="2" height="2" fill="#7b3a1a"/>
@@ -424,18 +417,17 @@
 <rect x="74" y="148" width="2" height="2" fill="#3a5a7b"/>
 <rect x="130" y="148" width="2" height="2" fill="#7b3a1a"/>
 <circle cx="126" cy="20" r="4" fill="#d4c49a" stroke="#8b6914" stroke-width="0.3"/>
-<text x="78" y="19" class="sub" fill="#5a3a1a" font-weight="bold">Записка №2</text>
-<text x="78" y="24" class="body" fill="#3d2b0a" font-weight="bold">Ресурс №2 — ПЛАМЯ ВЫНОСЛИВОСТИ</text>
-<text x="78" y="29" class="small" fill="#3d2b0a">Крафт активирован! Положи 3</text>
-<text x="78" y="32.8" class="small" fill="#3d2b0a">кристалла в ячейки крафта —</text>
-<text x="78" y="36.599999999999994" class="small" fill="#3d2b0a">получишь Алмазный клинок.</text>
-<text x="78" y="40.39999999999999" class="small" fill="#3d2b0a"></text>
-<text x="78" y="44.19999999999999" class="small" fill="#3d2b0a">--- Новое задание ---</text>
-<text x="78" y="47.999999999999986" class="small" fill="#3d2b0a">Ресурс №2 — ПЛАМЯ ВЫНОСЛИВОСТИ</text>
-<text x="78" y="51.79999999999998" class="small" fill="#3d2b0a">Преодолей лавовый трек, не</text>
-<text x="78" y="55.59999999999998" class="small" fill="#3d2b0a">наступив на красное. Там, где</text>
-<text x="78" y="59.39999999999998" class="small" fill="#3d2b0a">ветки становятся мостом.</text>
-<rect x="71.5" y="11.5" width="63" height="141" class="cutline"/>
+<text x="78" y="19" font-size="8" fill="#5a3a1a" font-weight="bold">Записка №2</text>
+<text x="78" y="24" font-size="7" fill="#3d2b0a" font-weight="bold">Ресурс №2 — ПЛАМЯ ВЫНОСЛИВОСТИ</text>
+<text x="78" y="29" font-size="5.5" fill="#3d2b0a">Крафт активирован! Положи 3</text>
+<text x="78" y="32.8" font-size="5.5" fill="#3d2b0a">кристалла в ячейки крафта —</text>
+<text x="78" y="36.599999999999994" font-size="5.5" fill="#3d2b0a">получишь Алмазный клинок.</text>
+<text x="78" y="40.39999999999999" font-size="5.5" fill="#3d2b0a">--- Новое задание ---</text>
+<text x="78" y="44.19999999999999" font-size="5.5" fill="#3d2b0a">Ресурс №2 — ПЛАМЯ ВЫНОСЛИВОСТИ</text>
+<text x="78" y="47.999999999999986" font-size="5.5" fill="#3d2b0a">Преодолей лавовый трек, не</text>
+<text x="78" y="51.79999999999998" font-size="5.5" fill="#3d2b0a">наступив на красное. Там, где</text>
+<text x="78" y="55.59999999999998" font-size="5.5" fill="#3d2b0a">ветки становятся мостом.</text>
+<rect x="71.5" y="11.5" width="63" height="141" stroke="#666" stroke-width="0.3" stroke-dasharray="3,2" fill="none"/>
 <rect x="137" y="13" width="62" height="140" rx="2" fill="rgba(0,0,0,0.15)"/>
 <rect x="136" y="12" width="62" height="140" rx="2" fill="#f5e6c8" stroke="#8b6914" stroke-width="0.5"/>
 <rect x="138" y="14" width="2" height="2" fill="#3a5a7b"/>
@@ -633,18 +625,17 @@
 <rect x="138" y="148" width="2" height="2" fill="#5a2a7b"/>
 <rect x="194" y="148" width="2" height="2" fill="#3a5a7b"/>
 <circle cx="190" cy="20" r="4" fill="#d4c49a" stroke="#8b6914" stroke-width="0.3"/>
-<text x="142" y="19" class="sub" fill="#5a3a1a" font-weight="bold">Записка №3</text>
-<text x="142" y="24" class="body" fill="#3d2b0a" font-weight="bold">Ресурс №3 — СЛЁЗЫ МОБА</text>
-<text x="142" y="29" class="small" fill="#3d2b0a">Паркур пройден! Ты получил</text>
-<text x="142" y="32.8" class="small" fill="#3d2b0a">ПЛАМЯ ВЫНОСЛИВОСТИ</text>
-<text x="142" y="36.599999999999994" class="small" fill="#3d2b0a"></text>
-<text x="142" y="40.39999999999999" class="small" fill="#3d2b0a">--- Новое задание ---</text>
-<text x="142" y="44.19999999999999" class="small" fill="#3d2b0a">Ресурс №3 — СЛЁЗЫ МОБА</text>
-<text x="142" y="47.999999999999986" class="small" fill="#3d2b0a">Иди туда, где живёт Зомби</text>
-<text x="142" y="51.79999999999998" class="small" fill="#3d2b0a">(ориентир: дерево с лентой).</text>
-<text x="142" y="55.59999999999998" class="small" fill="#3d2b0a">Победи его 3 мячами — он</text>
-<text x="142" y="59.39999999999998" class="small" fill="#3d2b0a">выронит слезу.</text>
-<rect x="135.5" y="11.5" width="63" height="141" class="cutline"/>
+<text x="142" y="19" font-size="8" fill="#5a3a1a" font-weight="bold">Записка №3</text>
+<text x="142" y="24" font-size="7" fill="#3d2b0a" font-weight="bold">Ресурс №3 — СЛЁЗЫ МОБА</text>
+<text x="142" y="29" font-size="5.5" fill="#3d2b0a">Паркур пройден! Ты получил</text>
+<text x="142" y="32.8" font-size="5.5" fill="#3d2b0a">ПЛАМЯ ВЫНОСЛИВОСТИ</text>
+<text x="142" y="36.599999999999994" font-size="5.5" fill="#3d2b0a">--- Новое задание ---</text>
+<text x="142" y="40.39999999999999" font-size="5.5" fill="#3d2b0a">Ресурс №3 — СЛЁЗЫ МОБА</text>
+<text x="142" y="44.19999999999999" font-size="5.5" fill="#3d2b0a">Иди туда, где живёт Зомби</text>
+<text x="142" y="47.999999999999986" font-size="5.5" fill="#3d2b0a">(ориентир: дерево с лентой).</text>
+<text x="142" y="51.79999999999998" font-size="5.5" fill="#3d2b0a">Победи его 3 мячами — он</text>
+<text x="142" y="55.59999999999998" font-size="5.5" fill="#3d2b0a">выронит слезу.</text>
+<rect x="135.5" y="11.5" width="63" height="141" stroke="#666" stroke-width="0.3" stroke-dasharray="3,2" fill="none"/>
 <rect x="9" y="156" width="62" height="140" rx="2" fill="rgba(0,0,0,0.15)"/>
 <rect x="8" y="155" width="62" height="140" rx="2" fill="#f5e6c8" stroke="#8b6914" stroke-width="0.5"/>
 <rect x="10" y="157" width="2" height="2" fill="#5a2a7b"/>
@@ -842,17 +833,16 @@
 <rect x="10" y="291" width="2" height="2" fill="#4a7b2a"/>
 <rect x="66" y="291" width="2" height="2" fill="#5a2a7b"/>
 <circle cx="62" cy="163" r="4" fill="#d4c49a" stroke="#8b6914" stroke-width="0.3"/>
-<text x="14" y="162" class="sub" fill="#5a3a1a" font-weight="bold">Записка №4</text>
-<text x="14" y="167" class="body" fill="#3d2b0a" font-weight="bold">Ресурс №4 — ПЕРВОРОДНАЯ ПЫЛЬ</text>
-<text x="14" y="172" class="small" fill="#3d2b0a">Моб повержен! СЛЁЗЫ МОБА твои!</text>
-<text x="14" y="175.8" class="small" fill="#3d2b0a"></text>
-<text x="14" y="179.60000000000002" class="small" fill="#3d2b0a">--- Новое задание ---</text>
-<text x="14" y="183.40000000000003" class="small" fill="#3d2b0a">Ресурс №4 — ПЕРВОРОДНАЯ ПЫЛЬ</text>
-<text x="14" y="187.20000000000005" class="small" fill="#3d2b0a">Ищи в самом неожиданном месте:</text>
-<text x="14" y="191.00000000000006" class="small" fill="#3d2b0a">туда, куда ты обычно не смотришь.</text>
-<text x="14" y="194.80000000000007" class="small" fill="#3d2b0a">(почтовый ящик / тайник под</text>
-<text x="14" y="198.60000000000008" class="small" fill="#3d2b0a">крыльцом / коробка)</text>
-<rect x="7.5" y="154.5" width="63" height="141" class="cutline"/>
+<text x="14" y="162" font-size="8" fill="#5a3a1a" font-weight="bold">Записка №4</text>
+<text x="14" y="167" font-size="7" fill="#3d2b0a" font-weight="bold">Ресурс №4 — ПЕРВОРОДНАЯ ПЫЛЬ</text>
+<text x="14" y="172" font-size="5.5" fill="#3d2b0a">Моб повержен! СЛЁЗЫ МОБА твои!</text>
+<text x="14" y="175.8" font-size="5.5" fill="#3d2b0a">--- Новое задание ---</text>
+<text x="14" y="179.60000000000002" font-size="5.5" fill="#3d2b0a">Ресурс №4 — ПЕРВОРОДНАЯ ПЫЛЬ</text>
+<text x="14" y="183.40000000000003" font-size="5.5" fill="#3d2b0a">Ищи в самом неожиданном месте:</text>
+<text x="14" y="187.20000000000005" font-size="5.5" fill="#3d2b0a">туда, куда ты обычно не смотришь.</text>
+<text x="14" y="191.00000000000006" font-size="5.5" fill="#3d2b0a">(почтовый ящик / тайник под</text>
+<text x="14" y="194.80000000000007" font-size="5.5" fill="#3d2b0a">крыльцом / коробка)</text>
+<rect x="7.5" y="154.5" width="63" height="141" stroke="#666" stroke-width="0.3" stroke-dasharray="3,2" fill="none"/>
 <rect x="73" y="156" width="62" height="140" rx="2" fill="rgba(0,0,0,0.15)"/>
 <rect x="72" y="155" width="62" height="140" rx="2" fill="#f5e6c8" stroke="#8b6914" stroke-width="0.5"/>
 <rect x="74" y="157" width="2" height="2" fill="#4a7b2a"/>
@@ -1050,16 +1040,14 @@
 <rect x="74" y="291" width="2" height="2" fill="#5a3a1a"/>
 <rect x="130" y="291" width="2" height="2" fill="#4a7b2a"/>
 <circle cx="126" cy="163" r="4" fill="#d4c49a" stroke="#8b6914" stroke-width="0.3"/>
-<text x="78" y="162" class="sub" fill="#5a3a1a" font-weight="bold">Записка №5</text>
-<text x="78" y="167" class="body" fill="#3d2b0a" font-weight="bold">ФИНАЛ — ЭНДЕР-ДРАКОН</text>
-<text x="78" y="172" class="small" fill="#3d2b0a">Ресурс №5 уже у тебя — это</text>
-<text x="78" y="175.8" class="small" fill="#3d2b0a">СИЛА ДВОИХ (вы в команде!).</text>
-<text x="78" y="179.60000000000002" class="small" fill="#3d2b0a"></text>
-<text x="78" y="183.40000000000003" class="small" fill="#3d2b0a">Неси ВСЕ 4 ресурса к фиолетовому</text>
-<text x="78" y="187.20000000000005" class="small" fill="#3d2b0a">порталу. Когда все на месте —</text>
-<text x="78" y="191.00000000000006" class="small" fill="#3d2b0a">появится ЭНДЕР-ДРАКОН!</text>
-<text x="78" y="194.80000000000007" class="small" fill="#3d2b0a"></text>
-<text x="78" y="198.60000000000008" class="small" fill="#3d2b0a">Победи его и получишь ГЛАВНЫЙ</text>
-<text x="78" y="202.4000000000001" class="small" fill="#3d2b0a">СУНДУК с подарками!</text>
-<rect x="71.5" y="154.5" width="63" height="141" class="cutline"/>
+<text x="78" y="162" font-size="8" fill="#5a3a1a" font-weight="bold">Записка №5</text>
+<text x="78" y="167" font-size="7" fill="#3d2b0a" font-weight="bold">ФИНАЛ — ЭНДЕР-ДРАКОН</text>
+<text x="78" y="172" font-size="5.5" fill="#3d2b0a">Ресурс №5 уже у тебя — это</text>
+<text x="78" y="175.8" font-size="5.5" fill="#3d2b0a">СИЛА ДВОИХ (вы в команде!).</text>
+<text x="78" y="179.60000000000002" font-size="5.5" fill="#3d2b0a">Неси ВСЕ 4 ресурса к фиолетовому</text>
+<text x="78" y="183.40000000000003" font-size="5.5" fill="#3d2b0a">порталу. Когда все на месте —</text>
+<text x="78" y="187.20000000000005" font-size="5.5" fill="#3d2b0a">появится ЭНДЕР-ДРАКОН!</text>
+<text x="78" y="191.00000000000006" font-size="5.5" fill="#3d2b0a">Победи его и получишь ГЛАВНЫЙ</text>
+<text x="78" y="194.80000000000007" font-size="5.5" fill="#3d2b0a">СУНДУК с подарками!</text>
+<rect x="71.5" y="154.5" width="63" height="141" stroke="#666" stroke-width="0.3" stroke-dasharray="3,2" fill="none"/>
 </svg>
