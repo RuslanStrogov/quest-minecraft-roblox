@@ -104,6 +104,7 @@ def gen_notes():
         for i, line in enumerate(lines):
             s.append(txt(cx+15, cy+80+i*24, line, 12, "#3d2b0a"))
     s.append(txt(400, 1100, "Вырежи по пунктиру", 14, "#999", "middle"))
+    s.append(end())
     with open(os.path.join(BASE, "01-zapiski-all.svg"), "w", encoding="utf-8") as f:
         f.write('\n'.join(s))
     print("  01-zapiski-all.svg")
@@ -125,6 +126,7 @@ def gen_diamonds():
         s.append(txt(cx+dw/2, cy+260, "✦ АЛМАЗ ✦", 22, "#4a8ab8", "middle", "bold"))
         s.append(txt(cx+dw/2, cy+280, "Кристалл Глубины", 14, "#6aadd8", "middle"))
     s.append(txt(400, 1100, "Вырежи → обведи на картоне → раскрась голубым акрилом", 14, "#999", "middle"))
+    s.append(end())
     with open(os.path.join(BASE, "02-diamonds.svg"), "w", encoding="utf-8") as f:
         f.write('\n'.join(s))
     print("  02-diamonds.svg")
@@ -154,6 +156,7 @@ def gen_sword():
     s.append(f'<rect x="{cx-140}" y="{cy-270}" width="280" height="540" fill="none" stroke="#888" stroke-width="1.5" stroke-dasharray="8,6"/>')
     # Size
     s.append(txt(400, 1100, "Длина ~65 см | Распечатай 2 копии → склей → на картон → обклей фольгой", 16, "#666", "middle"))
+    s.append(end())
     with open(os.path.join(BASE, "03-diamond-sword.svg"), "w", encoding="utf-8") as f:
         f.write('\n'.join(s))
     print("  03-diamond-sword.svg")
@@ -178,6 +181,7 @@ def gen_lava():
         s.append(f'<line x1="{x+120}" y1="{y+110}" x2="{x+50}" y2="{y+40}" stroke="#ff8800" stroke-width="2" opacity="0.5"/>')
         s.append(txt(x+bw/2, y+bh/2+8, "НЕ НАСТУПАТЬ!", 18, "#ffdd66", "middle", "bold"))
     s.append(txt(400, 1100, "Разложить на земле — наступать нельзя! Заламинировать от дождя.", 16, "#cc3300", "middle", "bold"))
+    s.append(end())
     with open(os.path.join(BASE, "04-lava-blocks.svg"), "w", encoding="utf-8") as f:
         f.write('\n'.join(s))
     print("  04-lava-blocks.svg")
@@ -197,6 +201,7 @@ def gen_hearts():
             s.append(f'<circle cx="{cx+60}" cy="{cy+30}" r="14" fill="white" opacity="0.4"/>')
             s.append(txt(cx+80, cy+200, "❤ HP", 28, "#aa1010", "middle", "bold"))
     s.append(txt(400, 1100, "10 сердечек — по 5 каждому игроку. Выдать перед финалом.", 14, "#999", "middle"))
+    s.append(end())
     with open(os.path.join(BASE, "05-hp-hearts.svg"), "w", encoding="utf-8") as f:
         f.write('\n'.join(s))
     print("  05-hp-hearts.svg")
@@ -223,6 +228,7 @@ def gen_flame():
         s.append(f'<polygon points="{cx},{cy} {cx+15},{cy-30} {cx+30},{cy-55} {cx+20},{cy-70} {cx+5},{cy-50} {cx-5},{cy-30} {cx},{cy}" fill="#ff6600"/>')
         s.append(f'<polygon points="{cx+5},{cy-5} {cx+12},{cy-28} {cx+20},{cy-48} {cx+15},{cy-60} {cx+5},{cy-40} {cx-2},{cy-25} {cx+5},{cy-5}" fill="#ffcc00"/>')
     s.append(txt(400, 1100, "Вырежи 2 больших + запасные. Прикрепи к жёлтой мишуре.", 14, "#666", "middle"))
+    s.append(end())
     with open(os.path.join(BASE, "06-flame-endurance.svg"), "w", encoding="utf-8") as f:
         f.write('\n'.join(s))
     print("  06-flame-endurance.svg")
@@ -244,6 +250,7 @@ def gen_tear():
         s.append(txt(cx+75, cy+130, "СЛЕЗА МОБА", 18, "#4060a0", "middle", "bold"))
         s.append(txt(cx+75, cy+160, "💧", 30, "#4060a0", "middle"))
     s.append(txt(400, 1100, "Вырежи, наклей на синюю бусину или камешек", 14, "#666", "middle"))
+    s.append(end())
     with open(os.path.join(BASE, "07-mob-tear.svg"), "w", encoding="utf-8") as f:
         f.write('\n'.join(s))
     print("  07-mob-tear.svg")
@@ -275,6 +282,7 @@ def gen_dragon():
         sx = 80 + i * 80
         s.append(f'<path d="M{sx},{1040} Q{sx+20},{1020} {sx+40},{1050}" fill="#3a1a5a" stroke="#5a2a7a" stroke-width="2" opacity="0.5"/>')
     s.append(txt(400, 1080, "Пришей/приклей завязки по краям", 12, "#666", "middle"))
+    s.append(end())
     with open(os.path.join(BASE, "08-dragon-mask.svg"), "w", encoding="utf-8") as f:
         f.write('\n'.join(s))
     print("  08-dragon-mask.svg")
@@ -308,6 +316,7 @@ def gen_chests():
         if sub:
             s.append(txt(cx+165, cy+490, sub, 16, "#3d2b0a", "middle"))
     s.append(txt(400, 1100, "Наклей на картонные коробки, обклеенные коричневой бумагой", 14, "#666", "middle"))
+    s.append(end())
     with open(os.path.join(BASE, "09-chest-labels.svg"), "w", encoding="utf-8") as f:
         f.write('\n'.join(s))
     print("  09-chest-labels.svg")
@@ -345,6 +354,7 @@ def gen_craft():
     ]
     for i, line in enumerate(lines):
         s.append(txt(70, 680+i*36, line, 16, "#3d2b0a"))
+    s.append(end())
     with open(os.path.join(BASE, "10-craft-grid.svg"), "w", encoding="utf-8") as f:
         f.write('\n'.join(s))
     print("  10-craft-grid.svg")
@@ -396,6 +406,7 @@ def gen_map():
         s.append(txt(sx2+80, sty+150, f"Ресурс {i+1}", 14, "#666", "middle"))
     # Info
     s.append(txt(400, 1100, "По ходу квеста дети наклеивают стикеры на собранные ресурсы. Заламинировать!", 14, "#666", "middle"))
+    s.append(end())
     with open(os.path.join(BASE, "11-progress-map.svg"), "w", encoding="utf-8") as f:
         f.write('\n'.join(s))
     print("  11-progress-map.svg")
@@ -435,6 +446,7 @@ def gen_signs():
     s.append(txt(400, 825, "THE VOID", 24, "#cc66ff", "middle", "bold"))
     s.append(txt(400, 940, "Собери все 4 ресурса и возвращайся сюда!", 20, "#7733aa", "middle"))
     s.append(txt(400, 975, "Когда все на месте — появится ЭНДЕР-ДРАКОН 🐉", 20, "#7733aa", "middle"))
+    s.append(end())
     with open(os.path.join(BASE, "12-scp-obby-signs.svg"), "w", encoding="utf-8") as f:
         f.write('\n'.join(s))
     print("  12-scp-obby-signs.svg")
@@ -452,6 +464,7 @@ def gen_obby():
         s.append(txt(cx+130, cy+190, f"{i+1}", 90, "#3a7a2a", "middle", "bold"))
         s.append(f'<rect x="{cx+190}" y="{cy+220}" width="30" height="60" fill="#44aa44" rx="4"/>')
         s.append(txt(cx+130, cy+270, "ЧЕКПОИНТ", 16, "#3a7a2a", "middle"))
+    s.append(end())
     with open(os.path.join(BASE, "13-obby-floor-signs.svg"), "w", encoding="utf-8") as f:
         f.write('\n'.join(s))
     print("  13-obby-floor-signs.svg")
@@ -472,6 +485,7 @@ def gen_wrap():
             if (row+col)%3 == 0:
                 s.append(f'<line x1="{bx+20}" y1="{by+12}" x2="{bx+bw-20}" y2="{by+bh-12}" stroke="#7a5a30" stroke-width="2" opacity="0.4"/>')
     s.append(txt(400, 1100, "Обклей коробки — получатся сундуки", 16, "#6b4f2e", "middle", "bold"))
+    s.append(end())
     with open(os.path.join(BASE, "14-chest-wrap.svg"), "w", encoding="utf-8") as f:
         f.write('\n'.join(s))
     print("  14-chest-wrap.svg")
